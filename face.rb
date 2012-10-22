@@ -37,6 +37,6 @@ class Face
 	end
 
 	def n vrt
-		((vrt[@b] - vrt[@a]) ^ (vrt[@c] - vrt[@a])).normalize
+		@n ||= ((vrt[@b] - vrt[@a]) ^ (vrt[@c] - vrt[@a])).normalize
 	end
 end
