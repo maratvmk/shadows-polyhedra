@@ -1,0 +1,1 @@
+An algorithm to find the shadows of a polyhedral surface with a plane-parallel and point-light fluxes
