@@ -41,7 +41,7 @@ init = lambda do
 	[v, e, faces]
 end
 
-read_init = lambda do |file|
+@read_init = lambda do |file|
 	File.readlines(file).each do |l|
 		case l[0..1]
 			when 'v ' then v << l[2..6].split(' ').map { |e| e.to_f }
@@ -50,3 +50,4 @@ read_init = lambda do |file|
 	end
 	init.call
 end
+
