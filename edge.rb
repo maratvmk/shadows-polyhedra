@@ -15,7 +15,7 @@ class Edge
 	end
 
 	def == ed
-		(@b == ed.b && @e == ed.e)||(@b == ed.e && @e == ed.b)
+		@b == ed.b && @e == ed.e
 	end
 
 	def != ed
@@ -23,7 +23,7 @@ class Edge
 	end
 
 	def =~ ed
-		@b == ed.e || @e == ed.b
+		@b == ed.e && @e == ed.b
 	end
 
 	def change(b, e)
@@ -48,5 +48,9 @@ class Edge
 
 	def incident ed
 		@b == ed.b || @b == ed.e || @e == ed.e || @e == ed.b
+	end
+
+	def inverse 
+		Edge.new(b: @e, e: @b)
 	end
 end

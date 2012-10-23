@@ -12,7 +12,7 @@ describe 'edge class' do
 
 	describe 'compare operators' do
 		it 'check ==' do
-			@e1.should == @e2
+			@e1.should == @e5
 		end
 
 		it 'check !=' do
