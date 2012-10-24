@@ -20,6 +20,10 @@ describe 'Vec3f class' do
 	end
 
 	describe 'operators' do
+		it 'check - unary' do
+			(-@v1).should == Vec3f.new(-1, -2, -2) 
+		end
+
 		it 'check ==' do
 			@v1.should == @v2
 		end 

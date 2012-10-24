@@ -20,6 +20,14 @@ class Face
 		(@a == f.a && @b == f.b && @c == f.c) || (@ab == f.ab && @bc == f.bc && @ca == f.ca )
 	end
 
+	def [] i
+		case i
+			when 0 then @ab
+			when 1 then @bc
+			when 2 then @ca
+		end
+	end
+
 	def < f
 		@a < f.a || (@a == f.a && @b < f.b) || (@a == f.a && @b == f.b && @c < f.c)
 	end
@@ -36,7 +44,11 @@ class Face
 		!(self < f)
 	end
 
-	def n vrt
+	def norm vrt
 		@n ||= ((vrt[@b] - vrt[@a]) ^ (vrt[@c] - vrt[@a])).normalize
+	end
+
+	def facial v
+		@n * (-v) > 0
 	end
 end

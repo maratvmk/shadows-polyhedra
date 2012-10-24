@@ -43,7 +43,7 @@ init = lambda do
 			when r_face.ca then ed.b_next = r_face.ab
 		end				
 	end
-	[v, e, faces]
+	[v, e, faces.each { |f| f.norm v }]
 end
 
 @read_init = lambda do |file|
@@ -54,5 +54,6 @@ end
 			when 'f ' then f_obj << l[2..6].split(' ').map { |e| e.to_i }
 		end
 	end
+	v.map! {|e| e = Vec3f.new(e[0], e[1], e[2])}
 	init.call
 end

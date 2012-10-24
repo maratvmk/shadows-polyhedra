@@ -21,7 +21,7 @@ class Vec3f
 
 	def * f
 		if f.class == Vec3f
-			@x*f.x + @y*f.y+@z*f.z
+			@x*f.x + @y*f.y + @z*f.z
 		else
 			@x *= f; @y *= f; @z *= f
 			self
@@ -31,6 +31,10 @@ class Vec3f
 	def / c
 		@x /= c; @y /= c; @z /= c
 		self
+	end
+
+	def -@
+		self*(-1)
 	end
 
 	def length

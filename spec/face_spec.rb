@@ -7,6 +7,10 @@ describe 'Face class' do
 		@f2 = Face.new(a:1, b:2, c:3)	
 		@f3 = Face.new(a:1, b:2, c:4)		
 		@f4 = Face.new(a:1, b:2, c:3)		
+		@vrt = []
+		@vrt[1] = Vec3f.new 1,0,0
+		@vrt[2] = Vec3f.new 0,1,0
+		@vrt[3] = Vec3f.new 0,0,1
 	end
 
 	it 'check ==' do
@@ -36,11 +40,15 @@ describe 'Face class' do
 	end
 
 	it 'check normal' do
-		@vrt = []
 		c = 1/Math.sqrt(3)
-		@vrt[1] = Vec3f.new 1,0,0
-		@vrt[2] = Vec3f.new 0,1,0
-		@vrt[3] = Vec3f.new 0,0,1
-		@f4.n(@vrt).should == Vec3f.new(c, c, c)
+		@f4.norm(@vrt).should == Vec3f.new(c, c, c)
+	end
+
+	it 'check []' do
+		@f1[2].should == 3
+	end
+
+	it 'check facial' do
+		
 	end
 end
