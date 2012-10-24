@@ -43,6 +43,7 @@ class Vec3f
 		self
 	end
 
+	## Векторное произведение
 	def ^ f
 		Vec3f.new(@y*f.z - f.y*@z, @z*f.x - f.z*@x, @x*f.y - f.x*@y)
 	end

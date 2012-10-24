@@ -1,3 +1,4 @@
+## Реберный список с вдвумя связами 
 class Edge
 	def initialize op={}
 		set op
@@ -22,6 +23,7 @@ class Edge
 		!(self == ed)		
 	end
 
+	## Противоположно направлены
 	def =~ ed
 		@b == ed.e && @e == ed.b
 	end
