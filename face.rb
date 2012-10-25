@@ -45,7 +45,8 @@ class Face
 	end
 
 	def norm vrt
-		@n ||= ((vrt[@b] - vrt[@a]) ^ (vrt[@c] - vrt[@a])).normalize
+		a = vrt[@a].clone; b = vrt[@b].clone; c = vrt[@c].clone
+		@n ||= ((b - a) ^ (c - a)).normalize
 	end
 
 	def facial v

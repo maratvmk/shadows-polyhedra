@@ -24,5 +24,5 @@ faces.each do |f|
 	end
 end
 
-
-p faces
+faces.each{|e| p e} 
+p v
