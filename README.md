@@ -1,1 +1,1 @@
-An algorithm to find the shadows of a polyhedral surface with a plane-parallel and point-light fluxes
+Computational Geometry. An algorithm to find the shade of a polyhedral surface into the area on the plane restricted by the rectangle in illumination plane and point light fluxes.
