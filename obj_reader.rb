@@ -22,9 +22,9 @@ end
 init = lambda do
 	## Проход по массиву граней
 	f_obj.each do |f|
-		ab = init_edges.call(0, 1, f)
-		bc = init_edges.call(1, 2, f)
-		ca = init_edges.call(2, 0, f)
+		ab = init_edges.(0, 1, f)
+		bc = init_edges.(1, 2, f)
+		ca = init_edges.(2, 0, f)
 		
 		faces << Face.new(a: f[0], b: f[1], c: f[2], ab: ab, bc: bc, ca: ca)
 	end
@@ -55,5 +55,5 @@ end
 		end
 	end
 	v.map! {|e| e = Vec3f.new(e[0], e[1], e[2])}
-	init.call
+	init.()
 end

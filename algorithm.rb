@@ -1,6 +1,6 @@
 require_relative "obj_reader.rb"
 
-v, e, faces = @read_init.call "obj/cube.obj"
+v, e, faces = @read_init.("obj/cube.obj")
 
 lt = Vec3f.new(-1,-1,-1)
 f_flag = Array.new(faces.size) { |i| i = false }
@@ -13,7 +13,7 @@ faces.each do |f|
 		f_flag[ind] = true
 		for i in 0..2
 			curr_f = faces[e[f[i]].r]
-			if !f_flag[j = faces.index(curr_f)]
+			unless f_flag[j = faces.index(curr_f)]
 				if curr_f.facial lt
 					stack.push(j) 
 				else
