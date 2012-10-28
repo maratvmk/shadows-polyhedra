@@ -1,11 +1,13 @@
+#!/usr/bin/ruby1.9.3
 require_relative "obj_reader.rb"
 
 v, e, faces = @read_init.("obj/cube.obj")
 
 lt = Vec3f.new(-1,-1,-1)
-f_flag = Array.new(faces.size) { |i| i = false }
-is_cntr = Array.new(e.size) {|e| e = false }
 stack = [0]
+
+f_flag = Array.new(faces.size) { |f| f = false }
+is_cntr = Array.new(e.size) { |c| c = false }
 
 faces.each do |f|
 	ind = faces.index f
