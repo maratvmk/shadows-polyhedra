@@ -30,16 +30,16 @@ for ind in 0..faces.size-1
 				curr_f = faces[e[f[i]].r]
 				unless f_flag[j = faces.index(curr_f)] #не обработан
 					if curr_f.facial lt #и лицевой
-						stack.push(j) 
+						stack.push(j)    #то, положим в стек
 					else 
 						@is_cntr[f[i]] = true #иначе это ребро контурное 
 					end
 				end
 			end
-		end
-		curr_ed = cntr = find_cntr_edge
+		end #найдены все контурные рёбра, одной лицевой поверхности 
+		curr_ed = cntr = find_cntr_edge #начальное контурное ребро
 		cntr_cycles[n] = []
-		begin
+		begin #построим контурный цикл из контурных рёбер
 			curr_ed = e[curr_ed].e_next
 			if @is_cntr[curr_ed]
 				cntr_cycles[n] << curr_ed
