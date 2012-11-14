@@ -16,10 +16,6 @@ def find_cntr_edge()
 	end
 end
 
-def flush()
-	@is_cntr.map!{ |e| e = false }
-end
-
 for ind in 0..faces.size-1
 	if !f_flag[ind] && faces[ind].facial(lt)  #грань не обработан и лицевой
 		stack.push ind 		
@@ -47,15 +43,16 @@ for ind in 0..faces.size-1
 				curr_ed = e.index e[curr_ed].inverse
 			end
 		end while curr_ed != cntr
-		flush
+		@is_cntr.map!{ |e| e = false }
 		n += 1
 	end
 end
 
-for i in 0..e.size-1
-	if @is_cntr[i]
-		p e[i]
-	end
-end
-
 p cntr_cycles
+puts
+for i in 0..cntr_cycles.size-1
+	for j in 0..cntr_cycles[i].size-1
+		p e[cntr_cycles[i][j]]
+	end
+	puts
+end
