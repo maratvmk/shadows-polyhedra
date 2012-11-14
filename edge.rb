@@ -12,7 +12,7 @@ class Edge
 		@l = op[:l] if op[:l]
 		@r = op[:r] if op[:r]
 		@b_next = op[:b_next] if op[:b_next]
-		@e_next = op[:e_next] if op[:e_next]		
+		@e_next = op[:e_next] if op[:e_next]	
 	end
 
 	def == ed
@@ -52,7 +52,7 @@ class Edge
 		@b == ed.b || @b == ed.e || @e == ed.e || @e == ed.b
 	end
 
-	def inverse 
+	def inverse
 		Edge.new(b: @e, e: @b)
 	end
 end

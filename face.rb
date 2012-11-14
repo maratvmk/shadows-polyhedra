@@ -45,11 +45,12 @@ class Face
 	end
 
 	def norm vrt
+		return @n if @n
 		a = vrt[@a].clone; b = vrt[@b].clone; c = vrt[@c].clone
 		@n ||= ((b - a) ^ (c - a)).normalize
 	end
 
 	def facial v
-		@n * (-v) > 0
+		@n * v < 0
 	end
 end
