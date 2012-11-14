@@ -33,14 +33,14 @@ init = lambda do
 	e.each do |ed|
 		l_face = faces[ed.l]; r_face = faces[ed.r]
 		case e.index(ed)
-			when l_face.ab then ed.e_next = e.index e[l_face.bc].inverse
-			when l_face.bc then ed.e_next = e.index e[l_face.ca].inverse
-			when l_face.ca then ed.e_next = e.index e[l_face.ab].inverse
+			when l_face.ab then ed.e_next = l_face.bc
+			when l_face.bc then ed.e_next = l_face.ca
+			when l_face.ca then ed.e_next = l_face.ab
 		end
 		case e.index(ed.inverse) 
-			when r_face.ab then ed.b_next = e.index e[r_face.bc].inverse
-			when r_face.bc then ed.b_next = e.index e[r_face.ca].inverse
-			when r_face.ca then ed.b_next = e.index e[r_face.ab].inverse
+			when r_face.ab then ed.b_next = r_face.bc
+			when r_face.bc then ed.b_next = r_face.ca
+			when r_face.ca then ed.b_next = r_face.ab
 		end				
 	end
 	[v, e, faces.each { |f| f.norm v }]

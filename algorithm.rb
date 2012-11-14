@@ -6,10 +6,9 @@ v, e, faces = @read_init.("obj/triple.obj")
 lt = Vec3f.new(-1,-1,-1)
 stack = []
 
-f_flag = Array.new(faces.size) { |f| f = false } #грань обработан или нет
-@is_cntr = Array.new(e.size) { |c| c = false }    #ребро контурный или нет
-cntr_cycles = []
-#cntr_cycle_borders = [0]
+f_flag = Array.new(faces.size, false) #грань обработан или нет
+@is_cntr = Array.new(e.size, false)   #ребро контурный или нет
+cntr_cycles = []; n = 0
 
 def find_cntr_edge()
 	for i in 0..@is_cntr.size-1
@@ -39,12 +38,17 @@ for ind in 0..faces.size-1
 			end
 		end
 		curr_ed = cntr = find_cntr_edge
-		flush
-		begin 
+		cntr_cycles[n] = []
+		begin
 			curr_ed = e[curr_ed].e_next
-			print cntr,' ', curr_ed
-			puts
+			if @is_cntr[curr_ed]
+				cntr_cycles[n] << curr_ed
+			else
+				curr_ed = e.index e[curr_ed].inverse
+			end
 		end while curr_ed != cntr
+		flush
+		n += 1
 	end
 end
 
@@ -53,3 +57,5 @@ for i in 0..e.size-1
 		p e[i]
 	end
 end
+
+p cntr_cycles
