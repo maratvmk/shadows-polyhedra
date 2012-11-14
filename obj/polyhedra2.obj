@@ -1,0 +1,6 @@
+mtllib cube.mtl
+o Cube_Cube.001
+v 2 0 0
+v 2 2 0
+v 0 2 0
+f 1 2 3
