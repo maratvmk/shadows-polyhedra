@@ -1,7 +1,7 @@
 #!/usr/bin/ruby1.9.3
 require_relative "obj_reader.rb"
 
-v, e, faces = @read_init.("obj/cube.obj")
+v, e, faces = @read_init.("obj/untitled.obj")
 
 lt = Vec3f.new(-1,-1,-1)
 stack = []

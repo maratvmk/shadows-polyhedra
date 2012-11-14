@@ -50,8 +50,8 @@ end
 	## Находим из файла вершины и грани
 	File.readlines(file).each do |l|
 		case l[0..1]
-			when 'v ' then v << l[2..6].split(' ').map { |e| e.to_f }
-			when 'f ' then f_obj << l[2..6].split(' ').map { |e| e.to_i }
+			when 'v ' then v << l[2..-1].split(' ').map { |e| e.to_f }
+			when 'f ' then f_obj << l[2..-1].split(' ').map { |e| e.to_i }
 		end
 	end
 	v.map! {|e| e = Vec3f.new(e[0], e[1], e[2])}

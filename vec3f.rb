@@ -33,10 +33,6 @@ class Vec3f
 		self
 	end
 
-	def -@
-		self*(-1)
-	end
-
 	def length
 		Math.sqrt @x**2 + @y**2 + @z**2		
 	end
