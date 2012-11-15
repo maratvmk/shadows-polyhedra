@@ -1,7 +1,7 @@
 require 'opengl'
 include Gl,Glu,Glut
-require_relative "obj_reader.rb"
-require_relative "contour_cycle.rb"
+require_relative "logics/obj_reader.rb"
+require_relative "logics/contour_cycle.rb"
 
 lt = Vec3f.new 1,0,0
 v, e, faces = @read_init.("obj/double.obj")
