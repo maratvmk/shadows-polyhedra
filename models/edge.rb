@@ -32,22 +32,6 @@ class Edge
 		@b = b; @e = e
 	end
 
-	def < ed 
-		@b < ed.b || (@b == ed.b && @e < ed.e) 
-	end
-
-	def <= ed
-		self < ed || self == ed
-	end
-
-	def > ed
-		!(self <= ed)
-	end
-
-	def >= ed
-		!(self < ed)
-	end
-
 	def incident ed
 		@b == ed.b || @b == ed.e || @e == ed.e || @e == ed.b
 	end

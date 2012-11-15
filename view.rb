@@ -10,6 +10,7 @@ cntr_cycles = @get_contour_cycles.(e, faces, lt)
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
 @light_position = [-1.0, -1.0, -1.0, 0.4]
+window = ""
 
 def init_gl
   glShadeModel GL_SMOOTH

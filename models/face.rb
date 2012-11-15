@@ -28,22 +28,6 @@ class Face
 		end
 	end
 
-	def < f
-		@a < f.a || (@a == f.a && @b < f.b) || (@a == f.a && @b == f.b && @c < f.c)
-	end
-
-	def <= f
-		self < f || self == f
-	end
-
-	def > f
-		!(self <= f)
-	end
-
-	def >= f
-		!(self < f)
-	end
-
 	def norm vrt
 		return @n if @n
 		a = vrt[@a].clone; b = vrt[@b].clone; c = vrt[@c].clone

@@ -48,10 +48,6 @@ class Vec3f
 		Vec3f.new(@y*f.z - f.y*@z, @z*f.x - f.z*@x, @x*f.y - f.x*@y)
 	end
 
-	def < f
-		@x < f.x || (@x == f.x && @y < f.y) || (@x == f.x && @y == f.y && @z < f.z)
-	end
-
 	def distance f
 		(self - f).length
 	end
