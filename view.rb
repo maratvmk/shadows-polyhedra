@@ -1,16 +1,18 @@
 require 'opengl'
 include Gl,Glu,Glut
 require_relative "obj_reader.rb"
+require_relative "algorithm.rb"
 
 v, e, faces = @read_init.("obj/double.obj")
+cntr_cycles = @get_counter_cycles.(e, faces)
 
 display = Proc.new do
 	glClear GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
 	glMatrixMode GL_MODELVIEW
   glLoadIdentity
 	
-	glColor3f(0.0, 0.6, 0.0)
-  glTranslatef 0.0, 0.0, -6.0
+	glColor3f 0.4, 0.4, 0.4
+  glTranslatef -0.5, 0.0, -7.0
 
   glBegin GL_TRIANGLES
   faces.each do |f| 
@@ -20,6 +22,18 @@ display = Proc.new do
   end
   glEnd
 	
+  glLineWidth 3
+  glColor3f 0.7, 0.7, 0.0
+  for i in 0..cntr_cycles.size-1
+    for j in 0..cntr_cycles[i].size-1 
+      ed = cntr_cycles[i][j]
+      glBegin GL_LINES
+        glVertex3f v[e[ed].b].x, v[e[ed].b].y, v[e[ed].b].z
+        glVertex3f v[e[ed].e].x, v[e[ed].e].y, v[e[ed].e].z
+      glEnd
+    end
+  end
+
   glutSwapBuffers()
 end
 
@@ -43,7 +57,7 @@ glutInit
 glutInitDisplayMode GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH
 glutInitWindowSize 640, 480
 glutInitWindowPosition 100, 100
-glutCreateWindow "shadows of polyhedra"
+window = glutCreateWindow "shadows of polyhedra"
 
 glutKeyboardFunc keyboard
 glutReshapeFunc reshape
