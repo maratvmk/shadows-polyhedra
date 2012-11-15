@@ -3,27 +3,48 @@ include Gl,Glu,Glut
 require_relative "obj_reader.rb"
 require_relative "algorithm.rb"
 
+lt = Vec3f.new 1,0,0
 v, e, faces = @read_init.("obj/double.obj")
-cntr_cycles = @get_counter_cycles.(e, faces)
+cntr_cycles = @get_counter_cycles.(e, faces, lt)
+
+@ambient = [0.1, 0.5, 0.5, 1.0]
+@diffuse = [0.4, 0.4, 1.0, 1.0]
+@light_position = [-1.0, -1.0, -1.0, 0.4]
+
+def init_gl
+  glShadeModel GL_SMOOTH
+
+  glLightfv GL_LIGHT1, GL_AMBIENT, @ambient
+  glLightfv GL_LIGHT1, GL_DIFFUSE, @diffuse
+  glLightfv GL_LIGHT1, GL_POSITION, @light_position
+
+  glEnable GL_LIGHT1
+  true
+end
 
 display = Proc.new do
 	glClear GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
 	glMatrixMode GL_MODELVIEW
   glLoadIdentity
-	
+	glEnable GL_DEPTH_TEST
+
+  glEnable GL_LIGHTING
 	glColor3f 0.4, 0.4, 0.4
   glTranslatef -0.5, 0.0, -7.0
 
   glBegin GL_TRIANGLES
-  faces.each do |f| 
+  faces.each do |f|
+    glNormal3f f.n.x, f.n.y, f.n.z
     glVertex3f v[f.a].x, v[f.a].y, v[f.a].z
     glVertex3f v[f.b].x, v[f.b].y, v[f.b].z
     glVertex3f v[f.c].x, v[f.c].y, v[f.c].z
   end
   glEnd
-	
-  glLineWidth 3
-  glColor3f 0.7, 0.7, 0.0
+
+  glDisable GL_DEPTH_TEST
+  glDisable GL_LIGHTING
+  glLineWidth 2
+  glColor3f 1.0, 1.0, 0.0
   for i in 0..cntr_cycles.size-1
     for j in 0..cntr_cycles[i].size-1 
       ed = cntr_cycles[i][j]
@@ -54,7 +75,7 @@ keyboard = lambda do |key, x, y|
 end
 
 glutInit
-glutInitDisplayMode GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH
+glutInitDisplayMode GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_ALPHA
 glutInitWindowSize 640, 480
 glutInitWindowPosition 100, 100
 window = glutCreateWindow "shadows of polyhedra"
@@ -62,4 +83,5 @@ window = glutCreateWindow "shadows of polyhedra"
 glutKeyboardFunc keyboard
 glutReshapeFunc reshape
 glutDisplayFunc display
+init_gl
 glutMainLoop

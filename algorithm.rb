@@ -1,7 +1,7 @@
-lt = Vec3f.new(-1,-1,-1); stack = []
+stack = []
 cntr_cycles = []; n = 0
 
-@get_counter_cycles = lambda do |e, faces|
+@get_counter_cycles = lambda do |e, faces, lt|
 	f_flag = Array.new(faces.size, false) # грань обработан или нет
 	is_cntr = Array.new(e.size, false)   # ребро контурный или нет
 
@@ -15,7 +15,7 @@ cntr_cycles = []; n = 0
 					curr_f = faces[e[f[i]].r]
 					unless f_flag[j = faces.index(curr_f)] # не обработан
 						if curr_f.facial lt # и лицевой
-							stack.push(j)    # то, положим в стек
+							stack.push j    # то, положим в стек
 						else 
 							is_cntr[f[i]] = true # иначе это ребро контурное 
 						end
@@ -38,14 +38,3 @@ cntr_cycles = []; n = 0
 	end
 	cntr_cycles
 end
-
-#p get_counter_cycles.(e, faces)
-=begin
-puts
-for i in 0..cntr_cycles.size-1
-	for j in 0..cntr_cycles[i].size-1
-		p e[cntr_cycles[i][j]]
-	end
-	puts
-end
-=end
