@@ -1,7 +1,7 @@
 ## Чтение .obj файла и начальная инициализация
 
-require_relative "edge.rb"
-require_relative "face.rb"
+require_relative "models/edge.rb"
+require_relative "models/face.rb"
 
 v = [0]; f_obj = []; e = []; faces = []
 
