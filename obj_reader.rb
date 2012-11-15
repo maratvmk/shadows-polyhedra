@@ -3,7 +3,7 @@
 require_relative "edge.rb"
 require_relative "face.rb"
 
-v = Array(0); f_obj = []; e = []; faces = []
+v = [0]; f_obj = []; e = []; faces = []
 
 init_edges = lambda do |k, n, f|
 	ind = f_obj.index(f)
