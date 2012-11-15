@@ -1,11 +1,11 @@
 require 'opengl'
 include Gl,Glu,Glut
 require_relative "obj_reader.rb"
-require_relative "algorithm.rb"
+require_relative "contour_cycle.rb"
 
 lt = Vec3f.new 1,0,0
 v, e, faces = @read_init.("obj/double.obj")
-cntr_cycles = @get_counter_cycles.(e, faces, lt)
+cntr_cycles = @get_contour_cycles.(e, faces, lt)
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
