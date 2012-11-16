@@ -4,20 +4,25 @@ require_relative "logics/obj_reader.rb"
 require_relative "logics/contour_cycle.rb"
 require_relative "logics/projection.rb"
 
-lt = Vec3f.new 0, 1, 1
+lt = Vec3f.new 0, 0, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, 0
-v, e, faces = @read_init.("obj/double.obj")
+v, e, faces = @read_init.("obj/buratino.obj")
 cntr_cycles = @get_contour_cycles.(e, faces, lt)
 projection = get_projection v, e, cntr_cycles, n, p, lt
 
+f = File.new("projection.obj", "w")
+
 projection.each do |c|
   c.each do |v|
-    p v
+    f.write("v #{v.x} #{v.y} #{v.z}\n")
   end
-  puts
 end
-
+tmp = ""
+#1.upto(projection[0].size){|i| tmp += i.to_s + " "}
+projection[0].size.upto(projection[1].size+projection[0].size){|i| tmp += i.to_s + " "}
+f.write("f #{tmp}")
+f.close
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
 @light_position = [-1.0, -1.0, -1.0, 0.4]
@@ -42,8 +47,9 @@ display = Proc.new do
 
   glEnable GL_LIGHTING
 	glColor3f 0.4, 0.4, 0.4
-  glTranslatef -0.5, 0.0, -7.0
+  glTranslatef 0.5, 0.0, -7.0
 
+  glRotatef(90.0, 1.0, 1.0, 1.0)
   glBegin GL_TRIANGLES
   faces.each do |f|
     glNormal3f f.n.x, f.n.y, f.n.z
