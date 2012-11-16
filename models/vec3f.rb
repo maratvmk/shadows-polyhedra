@@ -10,27 +10,23 @@ class Vec3f
 	end
 
 	def + f
-		@x += f.x; @y += f.y; @z += f.z
-		self
+		Vec3f.new @x + f.x, @y + f.y, @z + f.z
 	end
 
 	def - f
-		@x -= f.x; @y -= f.y; @z -= f.z
-		self
+		Vec3f.new @x - f.x, @y - f.y, @z - f.z
 	end
 
 	def * f
 		if f.class == Vec3f
 			@x*f.x + @y*f.y + @z*f.z
 		else
-			@x *= f; @y *= f; @z *= f
-			self
+			Vec3f.new @x*f, @y*f, @z*f
 		end
 	end
 
 	def / c
-		@x /= c; @y /= c; @z /= c
-		self
+		Vec3f.new @x/c, @y/c,  @z/c
 	end
 
 	def length

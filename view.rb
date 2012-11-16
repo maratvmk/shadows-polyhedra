@@ -7,7 +7,7 @@ require_relative "logics/projection.rb"
 lt = Vec3f.new 0, 0, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, 0
-v, e, faces = @read_init.("obj/buratino.obj")
+v, e, faces = @read_init.("obj/triple.obj")
 cntr_cycles = @get_contour_cycles.(e, faces, lt)
 projection = get_projection v, e, cntr_cycles, n, p, lt
 

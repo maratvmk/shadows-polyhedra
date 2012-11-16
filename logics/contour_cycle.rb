@@ -1,5 +1,4 @@
-stack = []
-cntr_cycles = []; n = 0
+stack = []; cntr_cycles = []; n = 0
 
 @get_contour_cycles = lambda do |e, faces, lt|
 	f_flag = Array.new(faces.size, false) # грань обработан или нет
