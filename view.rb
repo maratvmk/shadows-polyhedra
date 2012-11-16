@@ -10,7 +10,12 @@ p = Vec3f.new 0, 0, 0
 v, e, faces = @read_init.("obj/double.obj")
 cntr_cycles = @get_contour_cycles.(e, faces, lt)
 projection = get_projection(v, e, cntr_cycles, n, p, lt)
-p projection
+
+projection.each do |c|
+  c.each do |v|
+    p v
+  end
+end
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
