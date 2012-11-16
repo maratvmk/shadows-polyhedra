@@ -5,8 +5,9 @@
 # Ax+By+Cz+D=0 => n*r+D=0 => t = -(D+n*r0)/(n*a)
 
 def get_projection v, e, contour_cycles, n, p, lt
-	projection = Array.new(contour_cycles.size, []); m = 0
+	projection = Array.new(contour_cycles.size); m = 0
 	contour_cycles.each do |cycle|
+		projection[m] = []
 		cycle.each do |ed|
 			point = v[e[ed].b].clone
 			d = -(n*p)

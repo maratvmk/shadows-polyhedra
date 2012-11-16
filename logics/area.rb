@@ -14,7 +14,7 @@ polygon = [a, b, c, e]
 def get_area polygon
 	area = 0
 	for i in 0..p.size-1
-		res = polygon[i] ^ polygon[(i+1) % p.size]
+		res = polygon[i] ^ polygon[(i+1) % polygon.size]
 		if @n*res + @d > 0
 			area += res.length
 		else
