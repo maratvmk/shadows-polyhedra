@@ -1,5 +1,3 @@
-require_relative "../models/vec3f.rb"
-require_relative "../models/edge.rb"
 # плоскость в которую будем проектировать 
 # задаем  через нормаль и точку лежащей на ней
 # n = (A,B,C)
