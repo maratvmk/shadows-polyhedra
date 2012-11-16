@@ -2,10 +2,15 @@ require 'opengl'
 include Gl,Glu,Glut
 require_relative "logics/obj_reader.rb"
 require_relative "logics/contour_cycle.rb"
+require_relative "logics/projection.rb"
 
-lt = Vec3f.new 1,0,0
+lt = Vec3f.new 0, 1, 1
+n = Vec3f.new 1, 1, 1
+p = Vec3f.new 0, 0, 0
 v, e, faces = @read_init.("obj/double.obj")
 cntr_cycles = @get_contour_cycles.(e, faces, lt)
+projection = get_projection(v, e, cntr_cycles, n, p, lt)
+p projection
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
