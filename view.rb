@@ -3,28 +3,16 @@ include Gl,Glu,Glut
 require_relative "logics/obj_reader.rb"
 require_relative "logics/contour_cycle.rb"
 require_relative "logics/projection.rb"
+require_relative "logics/projection_to_obj.rb"
 
 lt = Vec3f.new 0, 0, 1
 n = Vec3f.new 1, 1, 1
-p = Vec3f.new 0, 0, 0
-v, e, faces = @read_init.("obj/t_pyramid.obj")
+p = Vec3f.new 0, 0, -5
+v, e, faces = @read_init.("obj/triple.obj")
 
 cntr_cycles = @get_contour_cycles.(e, faces, lt)
 projection = get_projection v, e, cntr_cycles, n, p, lt
-
-f = File.new("projection.obj", "w")
-count = 1
-for i in 0..projection.size-1
-  for j in 0..projection[i].size-1
-    v = projection[i][j]
-    f.write("v #{v.x} #{v.y} #{v.z}\n")
-  end
-  tmp = ""
-  count.upto(count + projection[i].size-1){|i| tmp += i.to_s + " "}  
-  f.write("f #{tmp}\n")
-  count += projection[i].size
-end
-f.close
+write_projection_to_file projection
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
