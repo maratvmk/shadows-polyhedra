@@ -6,7 +6,7 @@ stack = []; cntr_cycles = []; n = 0
 
 	for ind in 0..faces.size-1
 		if !f_flag[ind] && faces[ind].facial(lt)  # грань не обработан и лицевой
-			stack.push ind 		
+			stack.push ind
 			while id = stack.pop # пока стек не пуст
 				f = faces[id]
 				f_flag[id] = true
@@ -35,5 +35,6 @@ stack = []; cntr_cycles = []; n = 0
 			n += 1
 		end
 	end
+	p f_flag
 	cntr_cycles
 end

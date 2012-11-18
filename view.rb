@@ -5,12 +5,14 @@ require_relative "logics/contour_cycle.rb"
 require_relative "logics/projection.rb"
 require_relative "logics/projection_to_obj.rb"
 
-lt = Vec3f.new 0, 0, 1
+lt = Vec3f.new 1, 1, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
-v, e, faces = @read_init.("obj/triple.obj")
+v, e, faces = @read_init.("obj/t_n.obj")
 
 cntr_cycles = @get_contour_cycles.(e, faces, lt)
+p cntr_cycles
+
 projection = get_projection v, e, cntr_cycles, n, p, lt
 write_projection_to_file projection
 
@@ -40,7 +42,8 @@ display = Proc.new do
 	glColor3f 0.4, 0.4, 0.4
   glTranslatef 0.5, 0.0, -7.0
 
-  glScalef(0.3, 0.3, 0.3)
+  glScalef(0.6, 0.6, 0.6)
+  glRotatef(40, 1, 1, 1)
   glBegin GL_TRIANGLES
   faces.each do |f|
     glNormal3f f.n.x, f.n.y, f.n.z
