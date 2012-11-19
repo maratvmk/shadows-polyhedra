@@ -14,7 +14,7 @@ cntr_cycles = @get_contour_cycles.(e, faces, lt)
 p cntr_cycles
 
 projection = get_projection v, e, cntr_cycles, n, p, lt
-write_projection_to_file projection
+write_projection projection
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
