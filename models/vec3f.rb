@@ -8,6 +8,10 @@ class Vec3f
 	def == f
 		@x == f.x && @y == f.y &&  @z == f.z
 	end
+	
+	def < f
+   	@x < f.x || (@x == f.x && @y < f.y) || (@x == f.x && @y == f.y && @z < f.z)
+	end
 
 	def + f
 		Vec3f.new @x + f.x, @y + f.y, @z + f.z
