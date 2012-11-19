@@ -1,9 +1,9 @@
 require 'opengl'
 include Gl,Glu,Glut
-require_relative "io/obj_reader.rb"
+require_relative "io/reader.rb"
 require_relative "logics/contour_cycle.rb"
 require_relative "logics/projection.rb"
-require_relative "io/projection_to_obj.rb"
+require_relative "io/projection_writer.rb"
 
 lt = Vec3f.new 1, 1, 1
 n = Vec3f.new 1, 1, 1
