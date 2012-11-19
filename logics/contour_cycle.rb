@@ -1,6 +1,7 @@
-stack = []; cntr_cycles = []; n = 0
+require_relative "angle.rb"
+stack = []; cntr_cycles = []; asm_point = []; m = 0; alpha = 0
 
-@get_contour_cycles = lambda do |e, faces, lt|
+@get_contour_cycles = lambda do |v, e, faces, lt, n|
 	f_flag = Array.new(faces.size, false) # грань обработан или нет
 	is_cntr = Array.new(e.size, false)   # ребро контурный или нет
 
@@ -22,17 +23,21 @@ stack = []; cntr_cycles = []; n = 0
 				end
 			end # найдены все контурные рёбра, одной лицевой поверхности 
 			curr_ed = cntr = is_cntr.index true # начальное контурное ребро
-			cntr_cycles[n] = []
+			cntr_cycles[m] = []
 			begin # построим контурный цикл из контурных рёбер
+				alpha += angle [v[e[curr_ed].b], v[e[curr_ed].e], v[e[e[curr_ed].e_next].e]], lt, n
 				curr_ed = e[curr_ed].e_next
 				if is_cntr[curr_ed]
-					cntr_cycles[n] << curr_ed
+					cntr_cycles[m] << curr_ed
+					asm_point << curr_ed if alpha > 360
+					p alpha
+					alpha = 0
 				else
 					curr_ed = e.index e[curr_ed].inverse
 				end
 			end while curr_ed != cntr
 			is_cntr.map!{ |e| e = false }
-			n += 1
+			m += 1
 		end
 	end
 	p f_flag

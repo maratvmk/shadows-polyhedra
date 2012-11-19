@@ -9,7 +9,7 @@ def get_projection v, e, contour_cycles, n, p, lt
 	contour_cycles.each do |cycle|
 		projection[m] = []
 		cycle.each do |ed|
-			point = v[e[ed].b].clone
+			point = v[e[ed].b]
 			d = -(n*p)
 			t = -(d + n*point)/(n*lt)
 			projection[m] << point + lt * t

@@ -10,7 +10,7 @@ n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
 v, e, faces = @read_init.("obj/t_n.obj")
 
-cntr_cycles = @get_contour_cycles.(e, faces, lt)
+cntr_cycles = @get_contour_cycles.(v, e, faces, lt, n)
 p cntr_cycles
 
 projection = get_projection v, e, cntr_cycles, n, p, lt
