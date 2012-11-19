@@ -25,12 +25,12 @@ stack = []; cntr_cycles = []; asm_point = []; m = 0; alpha = 0
 			curr_ed = cntr = is_cntr.index true # начальное контурное ребро
 			cntr_cycles[m] = []
 			begin # построим контурный цикл из контурных рёбер
-				alpha += angle [v[e[curr_ed].b], v[e[curr_ed].e], v[e[e[curr_ed].e_next].e]], lt, n
+				corner = [v[e[curr_ed].b], v[e[curr_ed].e], v[e[e[curr_ed].e_next].e]]
+				alpha += angle corner, lt, n
 				curr_ed = e[curr_ed].e_next
 				if is_cntr[curr_ed]
 					cntr_cycles[m] << curr_ed
 					asm_point << curr_ed if alpha > 360
-					p alpha
 					alpha = 0
 				else
 					curr_ed = e.index e[curr_ed].inverse
@@ -40,6 +40,5 @@ stack = []; cntr_cycles = []; asm_point = []; m = 0; alpha = 0
 			m += 1
 		end
 	end
-	p f_flag
-	cntr_cycles
+	[cntr_cycles, asm_point]
 end
