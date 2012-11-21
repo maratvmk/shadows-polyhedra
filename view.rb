@@ -5,7 +5,7 @@ require_relative "logics/contour_cycle.rb"
 require_relative "logics/projection.rb"
 require_relative "io/projection_writer.rb"
 
-lt = Vec3f.new 1, 1, 1
+lt = Vec3f.new 1.5, 0.3, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
 v, e, faces = @read_init.("obj/t_n.obj")
@@ -60,11 +60,13 @@ display = Proc.new do
   for i in 0..cntr_cycles.size-1
     for j in 0..cntr_cycles[i].size-1 
       ed = cntr_cycles[i][j]
+=begin
       if asm_point.include? ed
         glColor3f 1.0, 0.0, 0.0
       else
         glColor3f 1.0, 1.0, 0.0
       end
+=end
       glBegin GL_LINES
         glVertex3f v[e[ed].b].x, v[e[ed].b].y, v[e[ed].b].z
         glVertex3f v[e[ed].e].x, v[e[ed].e].y, v[e[ed].e].z

@@ -34,6 +34,6 @@ class Face
 	end
 
 	def facial v
-		@n * v < 0
+		@n * v > 0
 	end
 end

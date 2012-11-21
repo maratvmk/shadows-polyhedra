@@ -39,4 +39,43 @@ class Edge
 	def inverse
 		Edge.new(b: @e, e: @b)
 	end
+
+	def intersect ed, v
+		ab =  v[@e] - v[@b]
+		cd = v[ed.e] - v[ed.b]
+		if ab.x != 0
+			k1 = ab.y/ab.x
+			b1 = v[@b].y - k1 * v[@b].x
+		else  
+			x1 = v[@b].x
+		end
+
+		if cd.x != 0
+			k2 = cd.y/cd.x 
+			b2 = v[ed.b].y - k2 * v[ed.b].x
+		else
+			x2 = v[ed.b].x
+		end
+
+		if x1 or x2
+			if x1 and x2
+				return 'overlap'  if x1 == x2
+				return false
+			end
+			return Vec3f.new(x1, k2*x1 + b2, 0) if x1
+			return Vec3f.new(x2, k1*x2 + b1, 0) if x2
+		end
+		
+		x = (b2 - b1)/(k1 - k2)
+		if (v[ed.b] < x and v[ed.e] > x) or (v[ed.b] > x and v[ed.e] < x)
+			if (v[@b] < x and v[@e] > x) or (v[@b] > x and v[@e] < x)
+				Vec3f.new x, k1*x + b1, 0
+			else
+				false
+			end
+		else
+			false	
+		end
+	end
+
 end
