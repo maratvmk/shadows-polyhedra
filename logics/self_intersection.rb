@@ -1,30 +1,25 @@
-require_relative "../models/vec3f"
-require_relative "../models/edge.rb"
 
-p = []
-e = []
-p << Vec3f.new(0, 0, 0)
-p << Vec3f.new(3, 0, 0)
-p << Vec3f.new(3, 3, 0)
-p << Vec3f.new(2, 3, 0)
-p << Vec3f.new(2, 2, 0)
-p << Vec3f.new(4, 2, 0)
-p << Vec3f.new(4, 4, 0)
-p << Vec3f.new(0, 4, 0)
-
-size = p.size
-for i in 0..size-1
-	e << Edge.new( b: i, e: (i+1) % size) 
-end
-
-asm_point = 4
-mass = []
-
-mass = (0..p.size-1).partition{|t| t/(asm_point-1) == 0}.map{|t| t.reverse}
-mass = mass[0] + mass[1]
-
-for i in mass
-	puts i
-	p  e[asm_point].intersect e[i], p
-
+def del_self_inttersections polygons, asm_point
+	for i in 0..polygons.size-1
+		psize = polygons[i].size; e = []; asm_mass = []
+		for j in 0..psize-1
+			e << Edge.new( b: j, e: (j+1) % psize)
+			asm_mass << j if asm_point[i].include? polygons[i][j]
+		end
+		for asm in asm_mass 
+			flag = false
+			mass = (0..psize-1).map{|e| e if ((e - asm).abs/6 == 0 or (psize - (e - asm).abs)/6 == 0)  and ((e - asm).abs % (psize-1)) > 1 }.compact
+			loop do
+				break if flag
+				for k in mass
+					if (e[asm].intersect e[k], polygons[i]).class == Vec3f
+						p e[asm].intersect e[k], polygons[i]
+						flag = true
+						break
+					end
+				end
+				asm = (asm-1) % psize
+			end
+		end
+	end
 end

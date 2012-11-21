@@ -71,9 +71,9 @@ class Edge
 		if (v[ed.b].x <= x and v[ed.e].x >= x) or (v[ed.b].x >= x and v[ed.e].x <= x)
 			if (v[@b].x <= x and v[@e].x >= x) or (v[@b].x >= x and v[@e].x <= x)
 				if k1
-					Vec3f.new x, k1*x + b1, 0
+					Vec3f.new x, k1*x + b1, v[@b].z + ab.z * (x - v[@b].x)/ab.x
 				else
-					Vec3f.new x, k2*x + b2, 0
+					Vec3f.new x, k2*x + b2, v[ed.b].z + cd.z * (x - v[ed.b].x)/cd.x
 				end
 			else
 				false

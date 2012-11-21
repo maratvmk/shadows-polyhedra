@@ -30,7 +30,9 @@ stack = []; cntr_cycles = []; asm_point = []; m = 0; alpha = 0
 				curr_ed = e[curr_ed].e_next
 				if is_cntr[curr_ed]
 					cntr_cycles[m] << curr_ed
-					asm_point << v[e[curr_ed].b] if alpha > 360
+					asm_b = v[e[curr_ed].b]
+					#asm_point << asm_b-lt*(n*asm_b)/(n*lt) if alpha > 360
+					asm_point << curr_ed if alpha > 360
 					alpha = 0
 				else
 					curr_ed = e.index e[curr_ed].inverse

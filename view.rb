@@ -4,6 +4,7 @@ require_relative "io/reader.rb"
 require_relative "logics/contour_cycle.rb"
 require_relative "logics/projection.rb"
 require_relative "io/projection_writer.rb"
+require_relative "logics/self_intersection.rb"
 
 lt = Vec3f.new 1.5, 0.3, 1
 n = Vec3f.new 1, 1, 1
@@ -13,7 +14,10 @@ v, e, faces = @read_init.("obj/t_n.obj")
 cntr_cycles, asm_point = @get_contour_cycles.(v, e, faces, lt, n)
 p cntr_cycles
 p asm_point
-projection = get_projection v, e, cntr_cycles, n, p, lt
+projection, asm = get_projection v, e, cntr_cycles, n, p, lt, asm_point
+p asm
+
+del_self_inttersections(projection, asm) unless asm.all?{|e| e.empty?}
 write_projection projection
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
