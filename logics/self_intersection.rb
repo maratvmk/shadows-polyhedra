@@ -17,4 +17,14 @@ for i in 0..size-1
 	e << Edge.new( b: i, e: (i+1) % size) 
 end
 
-p e[1].intersect e[3], p
+asm_point = 4
+mass = []
+
+mass = (0..p.size-1).partition{|t| t/(asm_point-1) == 0}.map{|t| t.reverse}
+mass = mass[0] + mass[1]
+
+for i in mass
+	puts i
+	p  e[asm_point].intersect e[i], p
+
+end
