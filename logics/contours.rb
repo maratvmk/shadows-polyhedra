@@ -25,11 +25,11 @@ stack = []; cntrs = []; asm_points = []; m = 0; alpha = 0
 			cntrs[m] = []
 			begin # построим контурный цикл из контурных рёбер
 				corner = [v[e[curr_ed].b], v[e[curr_ed].e], v[e[e[curr_ed].e_next].e]]
-				alpha += angle(corner, lt, n)
+				alpha += angle(corner, lt, n) # прибавляем угол меджу проекциями
 				curr_ed = e[curr_ed].e_next
 				if is_cntr[curr_ed]
 					cntrs[m] << curr_ed
-					asm_points << curr_ed if alpha > 360
+					asm_points << curr_ed if alpha > 360  # больше 2PI, то она точка сборки
 					alpha = 0
 				else
 					curr_ed = e.index e[curr_ed].inverse
@@ -39,5 +39,5 @@ stack = []; cntrs = []; asm_points = []; m = 0; alpha = 0
 			m += 1
 		end
 	end
-	[cntrs, asm_points]
+	[cntrs, asm_points] # возвр. контурный цикл и точки сборок
 end

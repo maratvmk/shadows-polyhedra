@@ -11,31 +11,31 @@ def remove_intersections polygons, asm_prs
 				break if flag
 				mass = (0..psize-1).map{|e| e if ((e-asm)/7==0 or (psize+e-asm)/7==0) and (e-asm).abs % (psize-1)>1 }.compact
 				for m in mass
-					if cr = e[asm].intersect(e[m], p) # если пересекаются, то запоминаем и break
-						if asm > m
-							cross[m] = [cr, asm]
-							cross[:index] += (m..asm-1).to_a
-						else
+					if cr = e[asm].intersect(e[m], p) # если пересекаются
+						if asm > m 
+							cross[m] = [cr, asm] # то запоминаем, номера ребёр и координаты пересечения
+							cross[:index] += (m..asm-1).to_a # помечаем внутренние ребра для удаления
+						else 
 						 	cross[asm] = [cr, m]
 						 	cross[:index] += (asm..m-1).to_a
 						end
 						flag = true; break
 					end
 				end
-				asm = (asm-1) % psize
+				asm = (asm-1) % psize # пересечение не нашли, то движемся назад на одно ребро
 			end
 		end
-		for j in 0..psize-1 # удаляем ненужные вершины и строим конечный полигон 
+		for j in 0..psize-1 # удаляем ненужные вершины и строим конечный полигон
 			if cross[:index].include?(j)
-				if cross[j]
-					p[e[j].e] = cross[j][0]
-					p[e[cross[j][1]].b] = cross[j][0]
-				else
-					p[j] = nil
+				if cross[j] # самопересечение в j ребре 
+					p[e[j].e] = cross[j][0]  # изменяем конец ребра, в точку пересечение
+					p[e[cross[j][1]].b] = cross[j][0] # изменяем начало ребра, в точку пересечение
+ 				else
+					p[j] = nil  # удаление вершины из полигона
 				end
 			end
 		end
 		p.compact!
 	end
-	polygons
+	polygons # возвр. обработанный полигон
 end
