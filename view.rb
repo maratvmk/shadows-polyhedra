@@ -12,13 +12,13 @@ p = Vec3f.new 0, 0, -5
 v, e, faces = @read.("obj/t_n.obj")
 
 cntrs, asm_points = @get_contours.(v, e, faces, lt, n)
-p cntrs
-p asm_points
 pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
-p asm_prs
-
 remove_intersections(pr, asm_prs) unless asm_prs.all?{|e| e.empty?}
 write_projection pr
+
+#p cntrs
+#p asm_points
+#p asm_prs
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
