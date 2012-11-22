@@ -1,19 +1,19 @@
-
-def del_self_inttersections polygons, asm_point
+def del_self_inttersections polygons, asm_prs
 	for i in 0..polygons.size-1
-		psize = polygons[i].size; e = []; asm_mass = []
+		p = polygons[i]; psize = p.size; e = []; asm_eds = []
 		for j in 0..psize-1
-			e << Edge.new( b: j, e: (j+1) % psize)
-			asm_mass << j if asm_point[i].include? polygons[i][j]
+			e << Edge.new( b: (j-1) % psize,  e: j)
+			asm_eds << j if asm_prs[i].include? p[j]
 		end
-		for asm in asm_mass 
+		for asm in asm_eds 
 			flag = false
-			mass = (0..psize-1).map{|e| e if ((e - asm).abs/6 == 0 or (psize - (e - asm).abs)/6 == 0)  and ((e - asm).abs % (psize-1)) > 1 }.compact
 			loop do
 				break if flag
+				mass = (0..psize-1).map{|e| e if ((e-asm)/7==0 or (psize+e-asm)/7==0) and (e-asm).abs % (psize-1)>1 }.compact
 				for k in mass
-					if (e[asm].intersect e[k], polygons[i]).class == Vec3f
-						p e[asm].intersect e[k], polygons[i]
+					puts k
+					if cross = e[asm].intersect(e[k], p)
+						p cross
 						flag = true
 						break
 					end

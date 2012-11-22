@@ -58,13 +58,19 @@ class Edge
 
 		if x1 or x2
 			if x1 and x2
-				return 'x1 == x2'  if x1 == x2
+				if x1 == x2
+					puts 'x1 == x2'  
+					return false
+				end
 				return false
 			end
 			x = x1 if x1
 			x = x2 if x2
 		else
-			return 'k1 == k2' if k1 == k2
+			if k1 == k2
+				puts 'k1 == k2' 
+				return false
+			end
 			x = (b2 - b1)/(k1 - k2)
 		end
 		

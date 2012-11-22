@@ -11,13 +11,13 @@ n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
 v, e, faces = @read_init.("obj/t_n.obj")
 
-cntr_cycles, asm_point = @get_contour_cycles.(v, e, faces, lt, n)
+cntr_cycles, asm_points = @get_contour_cycles.(v, e, faces, lt, n)
 p cntr_cycles
-p asm_point
-projection, asm = get_projection v, e, cntr_cycles, n, p, lt, asm_point
-p asm
+p asm_points
+projection, asm_prs = get_projection v, e, cntr_cycles, n, p, lt, asm_points
+p asm_prs
 
-del_self_inttersections(projection, asm) unless asm.all?{|e| e.empty?}
+del_self_inttersections(projection, asm_prs) unless asm_prs.all?{|e| e.empty?}
 write_projection projection
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
@@ -64,13 +64,13 @@ display = Proc.new do
   for i in 0..cntr_cycles.size-1
     for j in 0..cntr_cycles[i].size-1 
       ed = cntr_cycles[i][j]
-=begin
-      if asm_point.include? ed
+#=begin
+      if asm_points.include? ed
         glColor3f 1.0, 0.0, 0.0
       else
         glColor3f 1.0, 1.0, 0.0
       end
-=end
+#=end
       glBegin GL_LINES
         glVertex3f v[e[ed].b].x, v[e[ed].b].y, v[e[ed].b].z
         glVertex3f v[e[ed].e].x, v[e[ed].e].y, v[e[ed].e].z
