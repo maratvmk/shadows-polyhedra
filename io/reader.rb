@@ -46,7 +46,7 @@ init = lambda do
 	[v, e, faces.each { |f| f.norm v }]
 end
 
-@read_init = lambda do |file|
+@read = lambda do |file|
 	## Находим из файла вершины и грани
 	File.readlines(file).each do |l|
 		case l[0..1]

@@ -4,20 +4,20 @@
 # r=r0+a*t
 # Ax+By+Cz+D=0 => n*r+D=0 => t = -(D+n*r0)/(n*a)
 
-def get_projection v, e, contour_cycles, n, p, lt, asm_point
-	projection = Array.new(contour_cycles.size); m = 0
-	asm = Array.new contour_cycles.size
-	contour_cycles.each do |cycle|
-		projection[m] = []; asm[m] = []
-		cycle.each do |ed|
+def project v, e, contours, n, p, lt, asm_points
+	pr = Array.new(contours.size); m = 0
+	asm_prs = Array.new contours.size
+	contours.each do |cntr|
+		pr[m] = []; asm_prs[m] = []
+		cntr.each do |ed|
 			point = v[e[ed].b]
 			d = -(n*p)
 			t = -(d + n*point)/(n*lt)
-			pr = point + lt * t
-			projection[m] << pr
-			asm[m] << pr if asm_point.include? ed
+			pp = point + lt * t
+			pr[m] << pp
+			asm_prs[m] << pp if asm_points.include? ed
 		end
 		m += 1
 	end
-	[projection, asm]
+	[pr, asm_prs]
 end

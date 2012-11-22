@@ -1,24 +1,24 @@
 require 'opengl'
 include Gl,Glu,Glut
 require_relative "io/reader.rb"
-require_relative "logics/contour_cycle.rb"
+require_relative "logics/contours.rb"
 require_relative "logics/projection.rb"
 require_relative "io/projection_writer.rb"
-require_relative "logics/self_intersection.rb"
+require_relative "logics/self_intersections.rb"
 
 lt = Vec3f.new 1.5, 0.3, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
-v, e, faces = @read_init.("obj/t_n.obj")
+v, e, faces = @read.("obj/t_n.obj")
 
-cntr_cycles, asm_points = @get_contour_cycles.(v, e, faces, lt, n)
-p cntr_cycles
+cntrs, asm_points = @get_contours.(v, e, faces, lt, n)
+p cntrs
 p asm_points
-projection, asm_prs = get_projection v, e, cntr_cycles, n, p, lt, asm_points
+pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
 p asm_prs
 
-del_self_inttersections(projection, asm_prs) unless asm_prs.all?{|e| e.empty?}
-write_projection projection
+remove_intersections(pr, asm_prs) unless asm_prs.all?{|e| e.empty?}
+write_projection pr
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
@@ -61,9 +61,9 @@ display = Proc.new do
   glDisable GL_LIGHTING
   glLineWidth 2
   glColor3f 1.0, 1.0, 0.0
-  for i in 0..cntr_cycles.size-1
-    for j in 0..cntr_cycles[i].size-1 
-      ed = cntr_cycles[i][j]
+  for i in 0..cntrs.size-1
+    for j in 0..cntrs[i].size-1 
+      ed = cntrs[i][j]
 #=begin
       if asm_points.include? ed
         glColor3f 1.0, 0.0, 0.0
@@ -79,10 +79,10 @@ display = Proc.new do
   end
 
   glColor3f 1.0, 1.0, 1.0
-  for i in 0..projection.size-1
-    for j in 0..projection[i].size-1
-      vt = projection[i][j]
-      vt2 = projection[i][(j+1) % projection[i].size]
+  for i in 0..pr.size-1
+    for j in 0..pr[i].size-1
+      vt = pr[i][j]
+      vt2 = pr[i][(j+1) % pr[i].size]
       glBegin GL_LINES
         glVertex3f vt.x, vt.y, vt.z
         glVertex3f vt2.x, vt2.y, vt2.z
