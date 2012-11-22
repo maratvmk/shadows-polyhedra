@@ -27,9 +27,8 @@ def remove_intersections polygons, asm_prs
 		end
 		for j in 0..psize-1 # удаляем ненужные вершины и строим конечный полигон
 			if cross[:index].include?(j)
-				if cross[j] # самопересечение в j ребре 
+				if cross[j] # самопересечение в j ребре
 					p[e[j].e] = cross[j][0]  # изменяем конец ребра, в точку пересечение
-					p[e[cross[j][1]].b] = cross[j][0] # изменяем начало ребра, в точку пересечение
  				else
 					p[j] = nil  # удаление вершины из полигона
 				end
