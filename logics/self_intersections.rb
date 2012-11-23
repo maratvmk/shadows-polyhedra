@@ -1,4 +1,5 @@
 def remove_intersections polygons, asm_prs
+	puts 'asm points'
 	for i in 0..polygons.size-1
 		p = polygons[i]; psize = p.size; e = []; asm_eds = []; cross = {index: []}
 		for j in 0..psize-1 
@@ -13,11 +14,11 @@ def remove_intersections polygons, asm_prs
 				for m in mass
 					if cr = e[asm].intersect(e[m], p) # если пересекаются
 						if asm > m 
-							cross[m] = [cr, asm] # то запоминаем, номера ребёр и координаты пересечения
-							cross[:index] += (m..asm-1).to_a # помечаем внутренние ребра для удаления
+							p[e[m].e] = cr
+							(m+1..asm-1).each{|n| p[n] = nil }
 						else 
-						 	cross[asm] = [cr, m]
-						 	cross[:index] += (asm..m-1).to_a
+							p[e[asm].e] = cr
+							(asm+1..m-1).each { |n| p[n] = nil }
 						end
 						flag = true; break
 					end
@@ -25,16 +26,6 @@ def remove_intersections polygons, asm_prs
 				asm = (asm-1) % psize # пересечение не нашли, то движемся назад на одно ребро
 			end
 		end
-		for j in 0..psize-1 # удаляем ненужные вершины и строим конечный полигон
-			if cross[:index].include?(j)
-				if cross[j] # самопересечение в j ребре
-					p[e[j].e] = cross[j][0]  # изменяем конец ребра, в точку пересечение
- 				else
-					p[j] = nil  # удаление вершины из полигона
-				end
-			end
-		end
 		p.compact!
 	end
-	polygons # возвр. обработанный полигон
 end
