@@ -1,1 +1,1 @@
-Computational Geometry. An algorithm to find the shade of a polyhedral surface into the area on the plane restricted by the rectangle in illumination plane and point light fluxes.
+Computational Geometry. Fast algorithm to find the shade of set of polyhedral surfaces into the rectangular area of the plane.
