@@ -9,7 +9,7 @@ def remove_intersections polygons, asm_prs
 			flag = false
 			loop do
 				break if flag
-				mass = (0..psize-1).map{|e| e if ((e-asm)/7==0 or (psize+e-asm)/7==0) and (e-asm).abs % (psize-1)>1 }.compact
+				mass = (0..psize-1).select{ |e| df=e-asm; (df/7==0 or (psize+df)/7==0) and df.abs % (psize-1)>1 }
 				for m in mass
 					if cr = e[asm].intersect(e[m], p) # если пересекаются
 						if asm > m 

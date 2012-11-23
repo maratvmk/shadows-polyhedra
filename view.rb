@@ -6,7 +6,7 @@ require_relative "logics/projection.rb"
 require_relative "io/projection_writer.rb"
 require_relative "logics/self_intersections.rb"
 
-lt = Vec3f.new 1, 3, 1
+lt = Vec3f.new 1, 1, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
 v, e, faces = @read.("obj/t_n.obj")
