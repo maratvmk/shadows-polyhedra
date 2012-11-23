@@ -4,7 +4,7 @@ class Edge
 		set op
 	end
 
-	attr_accessor :b, :e, :l, :r, :b_next, :e_next
+	attr_accessor :b, :e, :l, :r, :b_next, :e_next, :length
 
 	def set op={}
 		@b = op[:b] if op[:b]
@@ -13,6 +13,7 @@ class Edge
 		@r = op[:r] if op[:r]
 		@b_next = op[:b_next] if op[:b_next]
 		@e_next = op[:e_next] if op[:e_next]	
+		@length = op[:length] if op[:length]
 	end
 
 	def == ed
