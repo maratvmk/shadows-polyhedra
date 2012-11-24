@@ -6,6 +6,7 @@ require_relative "logics/projection.rb"
 require_relative "io/projection_writer.rb"
 require_relative "logics/self_intersections.rb"
 require_relative "logics/linear-nodal.rb"
+require_relative "logics/overlay.rb"
 
 lt = Vec3f.new -1, 2, 1
 n = Vec3f.new 1, 1, 1
@@ -17,7 +18,7 @@ pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
 remove_intersections(pr, asm_prs) unless asm_prs.all?{|e| e.empty?}
 
 vrt, eds = init_linear_nodal pr[0], pr[1]
-#pr = union vrt, eds 
+pr = intersection vrt, eds 
 p pr
 puts 'a'
 #write_projection pr
@@ -85,7 +86,7 @@ display = Proc.new do
       glEnd
     end
   end
-
+=begin
   # Рисуем проекцию контурного цикла
   glColor3f 1.0, 1.0, 1.0
   for i in 0..pr.size-1
@@ -98,7 +99,7 @@ display = Proc.new do
       glEnd
     end
   end
-=begin
+=end
     glColor3f 1.0, 1.0, 1.0
     for i in 0..pr.size-1
       vt = vrt[pr[i]]
@@ -108,7 +109,7 @@ display = Proc.new do
         glVertex3f vt2.x, vt2.y, vt2.z
       glEnd
     end
-=end
+
   glutSwapBuffers()
 end
 
