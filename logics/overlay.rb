@@ -19,22 +19,20 @@ def init_vrt v, e
 	vrt
 end
 
-def union v, e 
+def overlay v, e, dir
 	res = []; vrt = init_vrt v, e
 	curr = b_point = vrt.size-1
 	begin
-		r = direction(v, e, vrt[curr][1], :right)
+		r = direction(v, e, vrt[curr][1], dir)
 		res << (curr = e[r].e)
 	end while curr != b_point
-	res
+	res	
+end
+
+def union v, e 
+	overlay v, e, :right
 end
 
 def intersection v, e 
-	res = []; vrt = init_vrt v, e
-	curr = b_point = vrt.size-1
-	begin
-		r = direction(v, e, vrt[curr][1], :left)
-		res << (curr = e[r].e)
-	end while curr != b_point
-	res
+	overlay v, e, :left
 end

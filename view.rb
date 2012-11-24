@@ -18,7 +18,7 @@ pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
 remove_intersections(pr, asm_prs) unless asm_prs.all?{|e| e.empty?}
 
 vrt, eds = init_linear_nodal pr[0], pr[1]
-pr = intersection vrt, eds 
+pr = union vrt, eds 
 p pr
 puts 'a'
 #write_projection pr
