@@ -5,16 +5,22 @@ require_relative "logics/contours.rb"
 require_relative "logics/projection.rb"
 require_relative "io/projection_writer.rb"
 require_relative "logics/self_intersections.rb"
+require_relative "logics/linear-nodal.rb"
 
-lt = Vec3f.new 1, 1, 1
+lt = Vec3f.new -1, 2, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
-v, e, faces = @read.("obj/t_n.obj")
+v, e, faces = @read.("obj/double.obj")
 
 cntrs, asm_points = @get_contours.(v, e, faces, lt, n)
 pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
 remove_intersections(pr, asm_prs) unless asm_prs.all?{|e| e.empty?}
-write_projection pr
+
+vrt, eds = init_linear_nodal pr[0], pr[1]
+#pr = union vrt, eds 
+p pr
+puts 'a'
+#write_projection pr
 
 #p cntrs
 #p asm_points
@@ -47,8 +53,9 @@ display = Proc.new do
   glTranslatef 0.5, 0.0, -7.0
 
   glScalef(0.6, 0.6, 0.6)
-  glRotatef(40, 1, 1, 1)
-  glBegin GL_TRIANGLES
+  glRotatef(30, 1, 1, 1)
+  # Рисуем сам объект
+  glBegin GL_TRIANGLES 
   faces.each do |f|
     glNormal3f f.n.x, f.n.y, f.n.z
     glVertex3f v[f.a].x, v[f.a].y, v[f.a].z
@@ -59,6 +66,7 @@ display = Proc.new do
 
   glDisable GL_DEPTH_TEST
   glDisable GL_LIGHTING
+  # Рисуем контурный цикл
   glLineWidth 2
   glColor3f 1.0, 1.0, 0.0
   for i in 0..cntrs.size-1
@@ -78,6 +86,7 @@ display = Proc.new do
     end
   end
 
+  # Рисуем проекцию контурного цикла
   glColor3f 1.0, 1.0, 1.0
   for i in 0..pr.size-1
     for j in 0..pr[i].size-1
@@ -89,7 +98,17 @@ display = Proc.new do
       glEnd
     end
   end
-
+=begin
+    glColor3f 1.0, 1.0, 1.0
+    for i in 0..pr.size-1
+      vt = vrt[pr[i]]
+      vt2 = vrt[pr[ (i+1) % pr.size]]
+      glBegin GL_LINES
+        glVertex3f vt.x, vt.y, vt.z
+        glVertex3f vt2.x, vt2.y, vt2.z
+      glEnd
+    end
+=end
   glutSwapBuffers()
 end
 

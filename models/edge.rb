@@ -43,6 +43,7 @@ class Edge
 
 	def right ed, v
 		a = v[@e] - v[@b]; b = v[ed.e] - v[ed.b]
+		a.z = b.z = 0
 		(a ^ b).z > 0 ? true : false
 	end
 
