@@ -22,6 +22,18 @@ def init p
 	end
 end
 
+def right m_ed, e
+	tmp = m_ed[0]
+	for i in 0..m_ed.size-2
+		if e[m_ed[i]].right e[m_ed[i+1]]
+			tmp = m_ed[i]
+		else
+			tmp = m_ed[i+1]
+		end
+	end
+	tmp
+end
+
 init p1; init p2
 @l.sort!{|a,b| a.length <=> b.length}
 
@@ -35,7 +47,6 @@ while ed = @l.pop
 		end
 	end
 	e.compact! #v.uniq!{|e| [e.x, e.y]}
-
 	cr.sort!{|a,b| (v[ed.b] - a).length <=> (v[ed.b] - b).length}
 	
 	for i in 0..cr.size-2
@@ -51,4 +62,16 @@ while ed = @l.pop
 	end
 end
 
-e.each { |e| p e }
+vertices = v.map{|e| [e]}
+(0..v.size-1).each{|i| vertices[i][1] = []}
+for i in 0..e.size-1
+	vertices[e[i].b][1] << i
+end
+
+b_point = v[-1]
+#res << b_point[0]
+#begin
+	
+
+#end while b_point != curr
+

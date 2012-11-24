@@ -41,6 +41,15 @@ class Edge
 		Edge.new(b: @e, e: @b)
 	end
 
+	def right ed, v
+		a = v[@e] - v[@b]; b = v[ed.e] - v[ed.b]
+		(a ^ b).z > 0 ? true : false
+	end
+
+	def left ed, v
+		!right(ed, v)
+	end
+
 	def intersect ed, v
 		ab =  v[@e] - v[@b]; cd = v[ed.e] - v[ed.b]
 		if ab.x != 0
