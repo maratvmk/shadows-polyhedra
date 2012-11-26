@@ -1,7 +1,7 @@
 def init p, l
-	offset = l.size
-	for i in 0..p.size-1
-		l << Edge.new(b: i + offset, e: (i+1) % p.size + offset, length: (p[i] - p[(i+1) % p.size]).length)
+	offset = l.size; sz = p.size
+	for i in 0..sz-1
+		l << Edge.new(b: i + offset, e: (i+1) % sz + offset, length: (p[i] - p[(i+1) % sz]).length)
 	end
 end
 

@@ -8,17 +8,17 @@ require_relative "logics/self_intersections.rb"
 require_relative "logics/linear-nodal.rb"
 require_relative "logics/overlay.rb"
 
-lt = Vec3f.new -1, 2, 1
+lt = Vec3f.new 1, 2, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
-v, e, faces = @read.("obj/t_n.obj")
+v, e, faces = @read.("obj/double.obj")
 
 cntrs, asm_points = @get_contours.(v, e, faces, lt, n)
 pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
 remove_intersections(pr, asm_prs) unless asm_prs.all?{|e| e.empty?}
 
 vrt, eds = init_linear_nodal pr 
-pr = intersection vrt, eds 
+pr = union vrt, eds 
 
 #write_projection pr
 
@@ -52,7 +52,7 @@ display = Proc.new do
 	glColor3f 0.4, 0.4, 0.4
   glTranslatef 0.5, 0.0, -7.0
 
-  glScalef(0.6, 0.6, 0.6)
+  glScalef(0.4, 0.4, 0.4)
   glRotatef(30, 1, 1, 1)
   # Рисуем сам объект
   glBegin GL_TRIANGLES 
@@ -64,7 +64,7 @@ display = Proc.new do
   end
   glEnd
 
-  glDisable GL_DEPTH_TEST
+  
   glDisable GL_LIGHTING
   # Рисуем контурный цикл
   glLineWidth 2
