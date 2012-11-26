@@ -5,11 +5,12 @@ def init p, l
 	end
 end
 
-def init_linear_nodal p1, p2
-	e = []; l = []; cr = []
-
-	v = (p1 + p2).uniq{|e| [e.x, e.y]}
-	init p1, l; init p2, l
+def init_linear_nodal pr
+	v = []; e = []; l = []; cr = []
+	for i in 0..pr.size-1 
+		v = (v + pr[i]).uniq{|e| [e.x, e.y]}
+		init pr[i], l 
+	end
 	l.sort!{|a,b| a.length <=> b.length}
 
 	while ed = l.pop
@@ -38,4 +39,3 @@ def init_linear_nodal p1, p2
 	end
 	[v, e]
 end
-

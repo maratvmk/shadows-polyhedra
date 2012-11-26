@@ -1,10 +1,10 @@
-def direction v, e, m_eds, dir
-	r = m_eds[0]
-	for i in 0..m_eds.size-2
-		if e[m_eds[i]].send dir, e[m_eds[i+1]], v
-			r = m_eds[i]
+def direction v, e, eds, dir
+	r = eds[0]
+	for i in 0..eds.size-2
+		if e[eds[i]].send dir, e[eds[i+1]], v
+			r = eds[i]
 		else
-			r = m_eds[i+1]
+			r = eds[i+1]
 		end
 	end
 	r

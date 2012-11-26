@@ -11,16 +11,15 @@ require_relative "logics/overlay.rb"
 lt = Vec3f.new -1, 2, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
-v, e, faces = @read.("obj/double.obj")
+v, e, faces = @read.("obj/t_n.obj")
 
 cntrs, asm_points = @get_contours.(v, e, faces, lt, n)
 pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
 remove_intersections(pr, asm_prs) unless asm_prs.all?{|e| e.empty?}
 
-vrt, eds = init_linear_nodal pr[0], pr[1]
-pr = union vrt, eds 
-p pr
-puts 'a'
+vrt, eds = init_linear_nodal pr 
+pr = intersection vrt, eds 
+
 #write_projection pr
 
 #p cntrs
