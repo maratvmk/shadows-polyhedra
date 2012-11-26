@@ -11,7 +11,7 @@ def direction v, e, eds, dir
 end
 
 def init_vrt v, e
-	vrt = v.map{|e| [e]};
+	vrt = v.map{|e| [e]}
 	(0..vrt.size-1).each{|i| vrt[i][1] = []}
 	for i in 0..e.size-1
 		vrt[e[i].b][1] << i
@@ -26,13 +26,13 @@ def overlay v, e, dir
 		r = direction(v, e, vrt[curr][1], dir)
 		res << (curr = e[r].e)
 	end while curr != b_point
-	res	
+	res
 end
 
-def union v, e 
+def union v, e
 	overlay v, e, :right
 end
 
-def intersection v, e 
+def intersection v, e
 	overlay v, e, :left
 end

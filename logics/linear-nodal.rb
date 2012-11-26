@@ -1,7 +1,7 @@
-def init p, l
+def init p, l, ind
 	offset = l.size; sz = p.size
 	for i in 0..sz-1
-		l << Edge.new(b: i + offset, e: (i+1) % sz + offset, length: (p[i] - p[(i+1) % sz]).length)
+		l << Edge.new(b: i + offset, e: (i+1) % sz + offset, length: (p[i] - p[(i+1) % sz]).length, l: ind)
 	end
 end
 
@@ -9,7 +9,7 @@ def init_linear_nodal pr
 	v = []; e = []; l = []; cr = []
 	for i in 0..pr.size-1 
 		v = (v + pr[i]).uniq{|e| [e.x, e.y]}
-		init pr[i], l 
+		init pr[i], l, i
 	end
 	l.sort!{|a,b| a.length <=> b.length}
 
@@ -24,14 +24,13 @@ def init_linear_nodal pr
 		end
 		e.compact! #v.uniq!{|e| [e.x, e.y]}
 		cr.sort!{|a,b| (v[ed.b] - a).length <=> (v[ed.b] - b).length}
-		
-		for i in 0..cr.size-2
-			e << Edge.new(b: v.index(cr[i]), e: v.index(cr[i+1]))
-		end
 
 		if cr.empty? 
 			e << ed
 		else 
+			for i in 0..cr.size-2
+				e << Edge.new(b: v.index(cr[i]), e: v.index(cr[i+1]))
+			end
 			e << Edge.new(b: ed.b, e: v.index(cr[0]))
 			e << Edge.new(b: v.index(cr[-1]), e: ed.e)
 			cr.clear

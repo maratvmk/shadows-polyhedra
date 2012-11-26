@@ -11,7 +11,7 @@ require_relative "logics/overlay.rb"
 lt = Vec3f.new 1, 2, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
-v, e, faces = @read.("obj/double.obj")
+v, e, faces = @read.("obj/3cubes.obj")
 
 cntrs, asm_points = @get_contours.(v, e, faces, lt, n)
 pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
