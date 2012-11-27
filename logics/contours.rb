@@ -1,9 +1,7 @@
-require_relative "angle.rb"
-stack = []; cntrs = []; asm_points = []; m = 0; alpha = 0
-
-@get_contours = lambda do |v, e, faces, lt, n|
+def contours v, e, faces, lt, n
 	f_flag = {}; is_cntr = {} ## грань обработан или нет, ребро контурный или нет
-	
+	stack = []; cntrs = []; m = 0
+
 	for ind in 0..faces.size-1
 		if !f_flag[ind] && faces[ind].facial(lt)  ## грань не обработан и лицевой
 			stack.push ind
@@ -22,22 +20,16 @@ stack = []; cntrs = []; asm_points = []; m = 0; alpha = 0
 				end
 			end ## найдены все контурные рёбра, одной лицевой поверхности 
 			curr_ed = cntr = is_cntr.key(true) ## одно из контурных ребер
-			cntrs[m] = []
-			begin ## построим контурный цикл из контурных рёбер
-				corner = [v[e[curr_ed].b], v[e[curr_ed].e], v[e[e[curr_ed].e_next].e]]
-				alpha += angle(corner, lt, n) ## прибавляем угол меджу проекциями
-				curr_ed = e[curr_ed].e_next
+			cntrs[m] = [cntr]
+			while (curr_ed = e[curr_ed].e_next) != cntr ## построим контурный цикл из контурных рёбер
 				if is_cntr[curr_ed]
 					cntrs[m] << curr_ed
-					asm_points << curr_ed if alpha > 360  ## больше 360, то точка сборки
-					alpha = 0
 				else
 					curr_ed = e.index e[curr_ed].inverse
 				end
-			end while curr_ed != cntr
-			is_cntr.clear
-			m += 1
+			end 
+			m += 1; is_cntr.clear
 		end
 	end
-	[cntrs, asm_points] # возвр. контурный цикл и точки сборок
+	cntrs # возвр. контурный цикл и точки сборок
 end

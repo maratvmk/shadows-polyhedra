@@ -9,31 +9,29 @@ require_relative "io/projection_writer.rb"
 
 require_relative "logics/contours.rb"
 require_relative "logics/projection.rb"
-require_relative "logics/self_intersections.rb"
 require_relative "logics/linear-nodal.rb"
 require_relative "logics/overlay.rb"
 
 lt = Vec3f.new 1, 2, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
-v, e, faces = @read.("obj/4cubes.obj")
+v, e, faces = @read.("obj/t_n.obj")
 
-cntrs, asm_points = @get_contours.(v, e, faces, lt, n)
-pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
-remove_intersections(pr, asm_prs) unless asm_prs.all?{|e| e.empty?}
+cntrs = contours(v, e, faces, lt, n)
+old_pr = project(v, e, cntrs, n, p, lt)
 
-vrt, eds, cr_range, p_border = init_linear_nodal pr 
+vrt, eds, cr_range, p_border = init_linear_nodal old_pr
 pr = union vrt, eds, cr_range, p_border
 
 #write_projection pr
 #p cntrs
-#p asm_points
-#p asm_prs
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
 @light_position = [-1.0, -1.0, -1.0, 0.4]
 window = ""
+## флаги для появления и исчизновения объектов
+obj = true; cc = proj = old_proj = false
 
 def init_gl
   glShadeModel GL_SMOOTH
@@ -43,10 +41,10 @@ def init_gl
   glLightfv GL_LIGHT1, GL_POSITION, @light_position
 
   glEnable GL_LIGHT1
-  true
 end
 
 display = Proc.new do
+  puts 'aaaaaa'
 	glClear GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
 	glMatrixMode GL_MODELVIEW
   glLoadIdentity
@@ -58,50 +56,67 @@ display = Proc.new do
 
   glScalef(0.4, 0.4, 0.4)
   glRotatef(30, 1, 1, 1)
+
   # Рисуем сам объект
-  glBegin GL_TRIANGLES 
-  faces.each do |f|
-    glNormal3f f.n.x, f.n.y, f.n.z
-    glVertex3f v[f.a].x, v[f.a].y, v[f.a].z
-    glVertex3f v[f.b].x, v[f.b].y, v[f.b].z
-    glVertex3f v[f.c].x, v[f.c].y, v[f.c].z
+  if obj
+    glBegin GL_TRIANGLES 
+      faces.each do |f|
+        glNormal3f f.n.x, f.n.y, f.n.z
+        glVertex3f v[f.a].x, v[f.a].y, v[f.a].z
+        glVertex3f v[f.b].x, v[f.b].y, v[f.b].z
+        glVertex3f v[f.c].x, v[f.c].y, v[f.c].z
+      end
+    glEnd
   end
-  glEnd
 
   
   glDisable GL_LIGHTING
-  # Рисуем контурный цикл
-  glLineWidth 2
-  glColor3f 1.0, 1.0, 0.0
-  for i in 0..cntrs.size-1
-    for j in 0..cntrs[i].size-1 
-      ed = cntrs[i][j]
-#=begin
-      if asm_points.include? ed
-        glColor3f 1.0, 0.0, 0.0
-      else
-        glColor3f 1.0, 1.0, 0.0
+  ## Рисуем контурный цикл
+  if cc
+    glLineWidth 3
+    glColor3f 1.0, 1.0, 0.0
+    for i in 0..cntrs.size-1
+      for j in 0..cntrs[i].size-1 
+        ed = cntrs[i][j]
+        glBegin GL_LINES
+          glVertex3f v[e[ed].b].x, v[e[ed].b].y, v[e[ed].b].z
+          glVertex3f v[e[ed].e].x, v[e[ed].e].y, v[e[ed].e].z
+        glEnd
       end
-#=end
-      glBegin GL_LINES
-        glVertex3f v[e[ed].b].x, v[e[ed].b].y, v[e[ed].b].z
-        glVertex3f v[e[ed].e].x, v[e[ed].e].y, v[e[ed].e].z
-      glEnd
     end
   end
 
   ## Рисуем проекцию контурного цикла
+  glLineWidth 1
   glColor3f 1.0, 1.0, 1.0
-  for i in 0..pr.size-1
-    for j in 0..pr[i].size-1
-      vt = vrt[pr[i][j]]
-      vt2 = vrt[pr[i][(j+1) % pr[i].size]]
-      glBegin GL_LINES
-        glVertex3f vt.x, vt.y, vt.z
-        glVertex3f vt2.x, vt2.y, vt2.z
-      glEnd
+
+  if proj
+    for i in 0..pr.size-1
+      for j in 0..pr[i].size-1
+        vt = vrt[pr[i][j]]
+        vt2 = vrt[pr[i][(j+1) % pr[i].size]]
+        glBegin GL_LINES
+          glVertex3f vt.x, vt.y, vt.z
+          glVertex3f vt2.x, vt2.y, vt2.z
+        glEnd
+      end
     end
+  else
+    if old_proj 
+      for i in 0..old_pr.size-1
+        for j in 0..old_pr[i].size-1
+          vt = old_pr[i][j]
+          vt2 = old_pr[i][(j+1) % old_pr[i].size]
+          glBegin GL_LINES
+            glVertex3f vt.x, vt.y, vt.z
+            glVertex3f vt2.x, vt2.y, vt2.z
+          glEnd
+        end
+      end
+    end    
   end
+
+
 
   glutSwapBuffers()
 end
@@ -116,16 +131,21 @@ end
 
 keyboard = lambda do |key, x, y|
   case key
-  when ?\e
-    glutDestroyWindow window
-    exit(0)
+    when ?\e
+      glutDestroyWindow window
+      exit(0)
+    when 'o' then obj = !obj
+    when 'c' then cc = !cc
+    when 'p' then proj = !proj
+    when 's' then old_proj = !old_proj
   end
+  glutPostRedisplay
 end
 
 glutInit
 glutInitDisplayMode GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_ALPHA
-glutInitWindowSize 640, 480
-glutInitWindowPosition 100, 100
+glutInitWindowSize 940, 705
+glutInitWindowPosition 100, 10
 window = glutCreateWindow "shadows of polyhedra"
 
 glutKeyboardFunc keyboard
