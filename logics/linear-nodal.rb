@@ -16,9 +16,9 @@ def init_linear_nodal pr
 	cr_beg = v.size
 	l.sort!{|a,b| a.length <=> b.length} ## отсортируем все ребра по длине
 
-	while ed = l.pop
+	while ed = l.pop ## обработанные ребра из l добавляем в e 
 		for i in 0..e.size-1
-			if !ed.incident(e[i]) and tmp = ed.intersect(e[i], v)
+			if !ed.incident(e[i]) and tmp = ed.intersect(e[i], v) ## ищем пересечение рёбер
 				p_border[e[i].l] = p_border[ed.l] = nil
 				v << tmp; cr << tmp
 				e << Edge.new(b: e[i].b, e: v.size-1, l: e[i].l)
