@@ -1,9 +1,14 @@
 require 'opengl'
 include Gl,Glu,Glut
+
+require_relative "models/edge.rb"
+require_relative "models/face.rb"
+
 require_relative "io/reader.rb"
+require_relative "io/projection_writer.rb"
+
 require_relative "logics/contours.rb"
 require_relative "logics/projection.rb"
-require_relative "io/projection_writer.rb"
 require_relative "logics/self_intersections.rb"
 require_relative "logics/linear-nodal.rb"
 require_relative "logics/overlay.rb"
@@ -11,17 +16,16 @@ require_relative "logics/overlay.rb"
 lt = Vec3f.new 1, 2, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
-v, e, faces = @read.("obj/3cubes.obj")
+v, e, faces = @read.("obj/4cubes.obj")
 
 cntrs, asm_points = @get_contours.(v, e, faces, lt, n)
 pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
 remove_intersections(pr, asm_prs) unless asm_prs.all?{|e| e.empty?}
 
-vrt, eds = init_linear_nodal pr 
-pr = union vrt, eds 
+vrt, eds, cr_range = init_linear_nodal pr 
+pr = union vrt, eds, cr_range
 
 #write_projection pr
-
 #p cntrs
 #p asm_points
 #p asm_prs
@@ -85,29 +89,19 @@ display = Proc.new do
       glEnd
     end
   end
-=begin
-  # Рисуем проекцию контурного цикла
+
+  ## Рисуем проекцию контурного цикла
   glColor3f 1.0, 1.0, 1.0
   for i in 0..pr.size-1
     for j in 0..pr[i].size-1
-      vt = pr[i][j]
-      vt2 = pr[i][(j+1) % pr[i].size]
+      vt = vrt[pr[i][j]]
+      vt2 = vrt[pr[i][(j+1) % pr[i].size]]
       glBegin GL_LINES
         glVertex3f vt.x, vt.y, vt.z
         glVertex3f vt2.x, vt2.y, vt2.z
       glEnd
     end
   end
-=end
-    glColor3f 1.0, 1.0, 1.0
-    for i in 0..pr.size-1
-      vt = vrt[pr[i]]
-      vt2 = vrt[pr[ (i+1) % pr.size]]
-      glBegin GL_LINES
-        glVertex3f vt.x, vt.y, vt.z
-        glVertex3f vt2.x, vt2.y, vt2.z
-      glEnd
-    end
 
   glutSwapBuffers()
 end

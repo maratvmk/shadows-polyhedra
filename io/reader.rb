@@ -1,8 +1,4 @@
 ## Чтение .obj файла и начальная инициализация
-
-require_relative "../models/edge.rb"
-require_relative "../models/face.rb"
-
 v = [0]; f_obj = []; e = []; faces = []
 
 init_edges = lambda do |k, n, f|
@@ -18,10 +14,8 @@ init_edges = lambda do |k, n, f|
 	end	
 end
 
-## Строим РСДС и грани, нужным образом
-init = lambda do
-	## Проход по массиву граней
-	f_obj.each do |f|
+init = lambda do ## Строим РСДС и грани
+	f_obj.each do |f| ## Проход по массиву граней
 		ab = init_edges.(0, 1, f)
 		bc = init_edges.(1, 2, f)
 		ca = init_edges.(2, 0, f)
@@ -29,8 +23,7 @@ init = lambda do
 		faces << Face.new(a: f[0], b: f[1], c: f[2], ab: ab, bc: bc, ca: ca)
 	end
 
-	## Проход по массиву отрезков
-	e.each do |ed|
+	e.each do |ed| ## Проход по массиву отрезков
 		l_face = faces[ed.l]; r_face = faces[ed.r]
 		case e.index(ed)
 			when l_face.ab then ed.e_next = l_face.bc
@@ -47,8 +40,7 @@ init = lambda do
 end
 
 @read = lambda do |file|
-	## Находим из файла вершины и грани
-	File.readlines(file).each do |l|
+	File.readlines(file).each do |l| ## Находим из файла вершины и грани
 		case l[0..1]
 			when 'v ' then v << l[2..-1].split(' ').map { |e| e.to_f }
 			when 'f ' then f_obj << l[2..-1].split(' ').map { |e| e.to_i }

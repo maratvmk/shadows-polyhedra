@@ -7,18 +7,19 @@ end
 
 def init_linear_nodal pr
 	v = []; e = []; l = []; cr = []
-	for i in 0..pr.size-1 
+	for i in 0..pr.size-1 ## все вершины и ребра полигонов добавляем в лин.узловую модель
 		v = (v + pr[i]).uniq{|e| [e.x, e.y]}
 		init pr[i], l, i
 	end
-	l.sort!{|a,b| a.length <=> b.length}
+	cr_beg = v.size
+	l.sort!{|a,b| a.length <=> b.length} ## отсортируем все ребра по длине
 
 	while ed = l.pop
 		for i in 0..e.size-1
 			if !ed.incident(e[i]) and tmp = ed.intersect(e[i], v)
 				v << tmp; cr << tmp
-				e << Edge.new(b: e[i].b, e: v.size-1)
-				e << Edge.new(b: v.size-1, e: e[i].e)
+				e << Edge.new(b: e[i].b, e: v.size-1, l: e[i].l)
+				e << Edge.new(b: v.size-1, e: e[i].e, l: e[i].l)
 				e[i] = nil
 			end
 		end
@@ -36,5 +37,6 @@ def init_linear_nodal pr
 			cr.clear
 		end
 	end
-	[v, e]
+	cr_end = v.size-1
+	[v, e, cr_beg..cr_end]
 end
