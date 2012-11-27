@@ -1,4 +1,4 @@
-def contours v, e, faces, lt, n
+def contours e, faces, lt
 	f_flag = {}; is_cntr = {} ## грань обработан или нет, ребро контурный или нет
 	stack = []; cntrs = []; m = 0
 

@@ -11,20 +11,22 @@ require_relative "logics/contours.rb"
 require_relative "logics/projection.rb"
 require_relative "logics/linear-nodal.rb"
 require_relative "logics/overlay.rb"
+require_relative "logics/area.rb"
 
 lt = Vec3f.new 1, 2, 1
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
 v, e, faces = @read.("obj/t_n.obj")
 
-cntrs = contours(v, e, faces, lt, n)
+cntrs = contours(e, faces, lt)
 old_pr = project(v, e, cntrs, n, p, lt)
 
-vrt, eds, cr_range, p_border = init_linear_nodal old_pr
-pr = union vrt, eds, cr_range, p_border
+vrt, eds, cr_range, p_border = init_linear_nodal(old_pr)
+pr = union(vrt, eds, cr_range, p_border)
+
+puts area pr, vrt, n, p
 
 #write_projection pr
-#p cntrs
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
