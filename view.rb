@@ -22,8 +22,8 @@ cntrs, asm_points = @get_contours.(v, e, faces, lt, n)
 pr, asm_prs = project(v, e, cntrs, n, p, lt, asm_points)
 remove_intersections(pr, asm_prs) unless asm_prs.all?{|e| e.empty?}
 
-vrt, eds, cr_range = init_linear_nodal pr 
-pr = union vrt, eds, cr_range
+vrt, eds, cr_range, p_border = init_linear_nodal pr 
+pr = union vrt, eds, cr_range, p_border
 
 #write_projection pr
 #p cntrs

@@ -6,9 +6,11 @@ def init p, l, ind
 end
 
 def init_linear_nodal pr
-	v = []; e = []; l = []; cr = []
+	v = []; e = []; l = []; cr = []; p_border = []
 	for i in 0..pr.size-1 ## все вершины и ребра полигонов добавляем в лин.узловую модель
-		v = (v + pr[i]).uniq{|e| [e.x, e.y]}
+		s = v.size
+		p_border[i] = s..s + pr[i].size - 1
+		v = (v + pr[i]).uniq{ |e| [e.x, e.y] }
 		init pr[i], l, i
 	end
 	cr_beg = v.size
@@ -17,6 +19,7 @@ def init_linear_nodal pr
 	while ed = l.pop
 		for i in 0..e.size-1
 			if !ed.incident(e[i]) and tmp = ed.intersect(e[i], v)
+				p_border[e[i].l] = p_border[ed.l] = nil
 				v << tmp; cr << tmp
 				e << Edge.new(b: e[i].b, e: v.size-1, l: e[i].l)
 				e << Edge.new(b: v.size-1, e: e[i].e, l: e[i].l)
@@ -37,6 +40,6 @@ def init_linear_nodal pr
 			cr.clear
 		end
 	end
-	cr_end = v.size-1
-	[v, e, cr_beg..cr_end]
+	p_border.compact!
+	[v, e, cr_beg..v.size-1, p_border]
 end

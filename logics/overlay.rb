@@ -19,7 +19,7 @@ def init_vrt v, e
 	vrt
 end
 
-def overlay v, e, cr_range, dir
+def overlay v, e, cr_range, p_border, dir
 	cr = cr_range.to_a; cr_b = cr[0]
 	res = []; sz = -1; vrt = init_vrt v, e
 
@@ -31,13 +31,18 @@ def overlay v, e, cr_range, dir
 			res[sz] << (curr = e[r].e)
 		end while curr != b_point
 	end
+
+	p_border.each do |p|
+		res << p.to_a
+	end
+
 	res
 end
 
-def union v, e, cr_range
-	overlay v, e, cr_range, :right
+def union v, e, cr_range, p_border
+	overlay v, e, cr_range, p_border, :right
 end
 
 def intersection v, e, cr_range
-	overlay v, e, cr_range, :left
+	overlay v, e, cr_range, [], :left
 end
