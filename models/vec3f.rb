@@ -25,10 +25,6 @@ class Vec3f
 		end
 	end
 
-	def / c
-		Vec3f.new @x/c, @y/c,  @z/c
-	end
-
 	def length
 		Math.sqrt @x**2 + @y**2 + @z**2		
 	end
