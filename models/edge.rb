@@ -20,19 +20,6 @@ class Edge
 		@b == ed.b && @e == ed.e
 	end
 
-	def != ed
-		!(self == ed)		
-	end
-
-	## Противоположно направлены
-	def =~ ed
-		@b == ed.e && @e == ed.b
-	end
-
-	def change(b, e)
-		@b = b; @e = e
-	end
-
 	def incident ed
 		@b == ed.b || @b == ed.e || @e == ed.e || @e == ed.b
 	end
@@ -49,6 +36,17 @@ class Edge
 
 	def left ed, v
 		!right(ed, v)
+	end
+
+	def contain vr, v
+		a = v[@e] - v[@b]; b =  vr - v[@b]
+		if (a.x == 0 and b.x == 0) or (a.y == 0 and b.y == 0)
+			true
+		else
+			false if a.x == 0 or b.x == 0 or a.y == 0 or b.y == 0
+			k1 = a.y/a.x; k2 = b.y/b.x
+			k1 == k2 and k1 * k2 > 0 and a.length > b.length
+		end
 	end
 
 	def intersect ed, v

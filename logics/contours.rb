@@ -22,7 +22,7 @@ def contours e, faces, lt
 			curr_ed = cntr = is_cntr.key(true) ## одно из контурных ребер
 			cntrs[m] = [cntr]
 			while (curr_ed = e[curr_ed].e_next) != cntr ## построим контурный цикл из контурных рёбер
-				if is_cntr[curr_ed]
+				if is_cntr[curr_ed] ## если контурный то запоминаем
 					cntrs[m] << curr_ed
 				else
 					curr_ed = e.index e[curr_ed].inverse

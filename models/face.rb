@@ -29,7 +29,6 @@ class Face
 	end
 
 	def norm vrt
-		return @n if @n
 		@n ||= ((vrt[@b] - vrt[@a]) ^ (vrt[@c] - vrt[@a])).normalize
 	end
 
