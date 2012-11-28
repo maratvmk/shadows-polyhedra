@@ -1,7 +1,6 @@
 # плоскость в которую будем проектировать задаем  через нормаль и точку лежащей на ней
 # n = (A,B,C) r=r0+a*t
 # Ax+By+Cz+D=0 => n*r+D=0 => t = -(D+n*r0)/(n*a)
-
 def project v, e, cntrs, n, p, lt
 	pr = Array.new(cntrs.size); m = -1
 	cntrs.each do |c|
