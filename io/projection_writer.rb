@@ -1,5 +1,5 @@
 def write_projection pr
-	st = 1; f = File.new("projection.obj", "w")
+	st = 1; f = File.new("projection.obj", ?w)
 	for i in 0..pr.size-1
 	  p = pr[i]; sz = p.size; tmp = ""
 	 

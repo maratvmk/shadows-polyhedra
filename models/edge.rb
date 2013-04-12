@@ -29,7 +29,7 @@ class Edge
 	end
 
 	def right ed, v
-		a = v[@e] - v[@b]; b = v[ed.e] - v[ed.b]
+		a, b = v[@e] - v[@b], v[ed.e] - v[ed.b]
 		a.z = b.z = 0
 		(a ^ b).z > 0 ? true : false
 	end
@@ -39,7 +39,7 @@ class Edge
 	end
 
 	def contain vr, v
-		a = v[@e] - v[@b]; b =  vr - v[@b]
+		a, b = v[@e] - v[@b], vr - v[@b]
 		if (a.x == 0 and b.x == 0) or (a.y == 0 and b.y == 0)
 			true
 		else
@@ -50,7 +50,7 @@ class Edge
 	end
 
 	def intersect ed, v
-		ab =  v[@e] - v[@b]; cd = v[ed.e] - v[ed.b]
+		ab, cd =  v[@e] - v[@b], v[ed.e] - v[ed.b]
 		if ab.x != 0
 			k1 = ab.y/ab.x
 			b1 = v[@b].y - k1 * v[@b].x

@@ -1,4 +1,4 @@
-f = File.new "../obj/t_"+ARGV[0], "w"
+f = File.new "../obj/t_"+ARGV[0], ?w
 
 File.readlines("../obj/"+ARGV[0]).each do |l|
 	case l[0..1]

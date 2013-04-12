@@ -6,7 +6,7 @@ def init p, l, ind
 end
 
 def init_linear_nodal pr
-	v = []; e = []; l = []; cr = []; p_border = []; vrt_f = true
+	v, e, l, cr, p_border = [], [], [], [], []; vrt_f = true
 	for i in 0..pr.size-1 ## все вершины и ребра полигонов добавляем в лин.узловую модель
 		p_border[i] = v.size..v.size + pr[i].size - 1
 		v = (v + pr[i]).uniq{ |e| [e.x, e.y] }
@@ -16,14 +16,19 @@ def init_linear_nodal pr
 	l.sort!{|a,b| a.length <=> b.length} ## отсортируем все ребра по длине
 
 	while ed = l.pop ## обработанные ребра из l добавляем в e 
+=begin
 		for i in 0..v.size-1 ## ищем вершины принадлежащие ребру
 			cr << v[i] if ed.b != i and ed.e != i and ed.contain(v[i], v) 
 		end
-		vrt_f = true if cr.any? 
-
+		if cr.any? 
+			vrt_f = true 
+			puts 'wow'
+		end
+=end
 		if cr.empty?
 			for i in 0..e.size-1 ## ищем пересечение рёбер
 				if !ed.incident(e[i]) and tmp = ed.intersect(e[i], v) 
+					p e[i].l
 					p_border[e[i].l] = p_border[ed.l] = nil
 					v << tmp; cr << tmp
 					e << Edge.new(b: e[i].b, e: v.size-1, l: e[i].l)

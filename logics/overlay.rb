@@ -21,7 +21,7 @@ end
 
 def overlay v, e, cr_range, p_border, dir
 	cr = cr_range.to_a; cr_b = cr[0]
-	res = []; sz = -1; vrt = init_vrt v, e
+	res, sz = [], -1; vrt = init_vrt v, e
 
 	while curr = b_point = cr.pop ## обрабатываем все точки пересечения
 		sz += 1; res[sz] = []

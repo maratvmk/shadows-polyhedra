@@ -1,6 +1,6 @@
 def contours e, faces, lt
-	f_flag = {}; is_cntr = {} ## грань обработан или нет, ребро контурный или нет
-	stack = []; cntrs = []; m = 0
+	f_flag, is_cntr = {}, {} ## грань обработан или нет, ребро контурный или нет
+	stack, cntrs, m = [], [], 0
 
 	for ind in 0..faces.size-1
 		if !f_flag[ind] && faces[ind].facial(lt)  ## грань не обработан и лицевой

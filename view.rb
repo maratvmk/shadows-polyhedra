@@ -14,24 +14,19 @@ require_relative "logics/overlay.rb"
 require_relative "logics/area.rb"
 
 lt = Vec3f.new 1, 2, 1
+delta = Vec3f.new 0, 0, 0.3
 n = Vec3f.new 1, 1, 1
 p = Vec3f.new 0, 0, -5
 v, e, faces = @read.("obj/t_n.obj")
 
-cntrs = contours(e, faces, lt)
-old_pr = project(v, e, cntrs, n, p, lt)
-
-vrt, eds, cr_range, p_border = init_linear_nodal(old_pr)
-pr = union(vrt, eds, cr_range, p_border)
-
-puts area pr, vrt, n, p
-
+#puts area pr, vrt, n, p
 #write_projection pr
 
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
 @light_position = [-1.0, -1.0, -1.0, 0.4]
 window = ""
+x_alpha = y_alpha = 0
 ## флаги для появления и исчизновения объектов
 obj = true; cc = proj = old_proj = false
 
@@ -46,6 +41,14 @@ def init_gl
 end
 
 display = Proc.new do
+  
+  cntrs = contours(e, faces, lt)
+  old_pr = project(v, e, cntrs, n, p, lt)
+
+  vrt, eds, cr_range, p_border = init_linear_nodal(old_pr)
+  pr = union(vrt, eds, cr_range, p_border)
+
+
   puts 'aaaaaa'
 	glClear GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
 	glMatrixMode GL_MODELVIEW
@@ -57,7 +60,9 @@ display = Proc.new do
   glTranslatef 0.5, 0.0, -7.0
 
   glScalef(0.4, 0.4, 0.4)
-  glRotatef(30, 1, 1, 1)
+
+  glRotatef(x_alpha, 0, 1, 0)
+  glRotatef(y_alpha, 0, 0, 1)
 
   # Рисуем сам объект
   if obj
@@ -119,7 +124,6 @@ display = Proc.new do
   end
 
 
-
   glutSwapBuffers()
 end
 
@@ -129,6 +133,18 @@ reshape = Proc.new do |width, height|
   glMatrixMode GL_PROJECTION
   glLoadIdentity
   gluPerspective 45.0, width / height, 0.1, 100.0
+end
+
+old_x = old_y = 0
+motion = lambda do |x, y|
+  unless old_x
+    old_x = x; old_y = y
+    return
+  end
+  x_alpha += x - old_x; y_alpha += y - old_y
+  old_x = x; old_y = y
+  lt.x += x_alpha/10.0; lt.y += y_alpha/10.0
+  glutPostRedisplay
 end
 
 keyboard = lambda do |key, x, y|
@@ -153,5 +169,6 @@ window = glutCreateWindow "shadows of polyhedra"
 glutKeyboardFunc keyboard
 glutReshapeFunc reshape
 glutDisplayFunc display
+glutMotionFunc motion
 init_gl
 glutMainLoop

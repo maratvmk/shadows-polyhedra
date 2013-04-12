@@ -1,7 +1,7 @@
 ## Чтение .obj файла и начальная инициализация
-v = [0]; f_obj = []; e = []; faces = []
+v, f_obj, e, faces = [0], [], [], []
 
-init_edges = lambda do |k, n, f|
+init_ed = -> k, n, f do
 	ind = f_obj.index(f)
 	unless i = e.index(Edge.new(b: f[k], e: f[n]))
 		e << Edge.new(b: f[k], e: f[n], l: ind)
@@ -14,17 +14,15 @@ init_edges = lambda do |k, n, f|
 	end	
 end
 
-init = lambda do ## Строим РСДС и грани
+init = -> do ## Строим РСДС и грани
 	f_obj.each do |f| ## Проход по массиву граней
-		ab = init_edges.(0, 1, f)
-		bc = init_edges.(1, 2, f)
-		ca = init_edges.(2, 0, f)
+		ab, bc, ca = init_ed.(0, 1, f), init_ed.(1, 2, f), init_ed.(2, 0, f)
 		
 		faces << Face.new(a: f[0], b: f[1], c: f[2], ab: ab, bc: bc, ca: ca)
 	end
 
 	e.each do |ed| ## Проход по массиву отрезков
-		l_face = faces[ed.l]; r_face = faces[ed.r]
+		l_face, r_face = faces[ed.l], faces[ed.r]
 		case e.index(ed)
 			when l_face.ab then ed.e_next = l_face.bc
 			when l_face.bc then ed.e_next = l_face.ca
@@ -39,7 +37,7 @@ init = lambda do ## Строим РСДС и грани
 	[v, e, faces.each { |f| f.norm v }]
 end
 
-@read = lambda do |file|
+@read = -> file do
 	File.readlines(file).each do |l| ## Находим из файла вершины и грани
 		case l[0..1]
 			when 'v ' then v << l[2..-1].split(' ').map { |e| e.to_f }
