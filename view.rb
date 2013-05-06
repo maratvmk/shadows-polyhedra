@@ -14,9 +14,9 @@ require_relative "logics/overlay.rb"
 require_relative "logics/area.rb"
 
 lt = Vec3f.new(1, 2, 1)
-delta = Vec3f.new(0, 0, 0.3)
 n = Vec3f.new(1, 1, 1)
 p = Vec3f.new(0, 0, -5)
+
 v, e, faces = @read.("obj/t_n.obj")
 
 #puts area pr, vrt, n, p
