@@ -1,16 +1,17 @@
 ## Реберный список с вдвумя связами 
 class Edge
-	def initialize op={}
-		set op
+	def initialize(op = {})
+		set(op)
 	end
 
 	attr_accessor :b, :e, :l, :r, :b_next, :e_next, :length
 
-	def set op={}
+	def set(op = {})
 		@b = op[:b] if op[:b]
 		@e = op[:e] if op[:e]
 		@l = op[:l] if op[:l]
 		@r = op[:r] if op[:r]
+
 		@b_next = op[:b_next] if op[:b_next]
 		@e_next = op[:e_next] if op[:e_next]	
 		@length = op[:length] if op[:length]
@@ -20,7 +21,7 @@ class Edge
 		@b == ed.b && @e == ed.e
 	end
 
-	def incident ed
+	def incident(ed)
 		@b == ed.b || @b == ed.e || @e == ed.e || @e == ed.b
 	end
 
@@ -28,29 +29,36 @@ class Edge
 		Edge.new(b: @e, e: @b)
 	end
 
-	def right ed, v
+	def right(ed, v)
 		a, b = v[@e] - v[@b], v[ed.e] - v[ed.b]
 		a.z = b.z = 0
-		(a ^ b).z > 0 ? true : false
+		return (a ^ b).z > 0 ? true : false
 	end
 
-	def left ed, v
+	def left(ed, v)
 		!right(ed, v)
 	end
 
-	def contain vr, v
-		a, b = v[@e] - v[@b], vr - v[@b]
+	def contain(vr, v)
+		a = v[@e] - v[@b]
+		b = vr - v[@b]
+
 		if (a.x == 0 and b.x == 0) or (a.y == 0 and b.y == 0)
 			true
 		else
-			false if a.x == 0 or b.x == 0 or a.y == 0 or b.y == 0
-			k1 = a.y/a.x; k2 = b.y/b.x
+			return false if a.x == 0 or b.x == 0 or a.y == 0 or b.y == 0
+
+			k1 = a.y/a.x
+			k2 = b.y/b.x
+
 			k1 == k2 and k1 * k2 > 0 and a.length > b.length
 		end
 	end
 
-	def intersect ed, v
-		ab, cd =  v[@e] - v[@b], v[ed.e] - v[ed.b]
+	def intersect(ed, v)
+		ab =  v[@e] - v[@b]
+		cd = v[ed.e] - v[ed.b]
+
 		if ab.x != 0
 			k1 = ab.y/ab.x
 			b1 = v[@b].y - k1 * v[@b].x
@@ -86,9 +94,9 @@ class Edge
 		if (v[ed.b].x <= x and v[ed.e].x >= x) or (v[ed.b].x >= x and v[ed.e].x <= x)
 			if (v[@b].x <= x and v[@e].x >= x) or (v[@b].x >= x and v[@e].x <= x)
 				if k1
-					Vec3f.new x, k1*x + b1, v[@b].z + ab.z * (x - v[@b].x)/ab.x
+					Vec3f.new(x, k1*x + b1, v[@b].z + ab.z * (x - v[@b].x)/ab.x)
 				else
-					Vec3f.new x, k2*x + b2, v[ed.b].z + cd.z * (x - v[ed.b].x)/cd.x
+					Vec3f.new(x, k2*x + b2, v[ed.b].z + cd.z * (x - v[ed.b].x)/cd.x)
 				end
 			else
 				false

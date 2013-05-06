@@ -1,13 +1,13 @@
 require_relative "vec3f.rb"
 
 class Face
-	def initialize op={}
-		set op
+	def initialize(op = {})
+		set(op)
 	end
 
 	attr_accessor :a, :b, :c, :ab, :bc, :ca, :n
 
-	def set op
+	def set(op = {})
 		@a = op[:a]  if op[:a]
 		@b = op[:b]  if op[:b]
 		@c = op[:c]  if op[:c]
@@ -28,11 +28,11 @@ class Face
 		end
 	end
 
-	def norm vrt
+	def norm(vrt)
 		@n ||= ((vrt[@b] - vrt[@a]) ^ (vrt[@c] - vrt[@a])).normalize
 	end
 
-	def facial v
+	def facial(v)
 		@n * v > 0
 	end
 end
