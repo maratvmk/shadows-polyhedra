@@ -13,10 +13,10 @@ require_relative "logics/linear-nodal.rb"
 require_relative "logics/overlay.rb"
 require_relative "logics/area.rb"
 
-lt = Vec3f.new 1, 2, 1
-delta = Vec3f.new 0, 0, 0.3
-n = Vec3f.new 1, 1, 1
-p = Vec3f.new 0, 0, -5
+lt = Vec3f.new(1, 2, 1)
+delta = Vec3f.new(0, 0, 0.3)
+n = Vec3f.new(1, 1, 1)
+p = Vec3f.new(0, 0, -5)
 v, e, faces = @read.("obj/t_n.obj")
 
 #puts area pr, vrt, n, p
@@ -25,9 +25,10 @@ v, e, faces = @read.("obj/t_n.obj")
 @ambient = [0.1, 0.5, 0.5, 1.0]
 @diffuse = [0.4, 0.4, 1.0, 1.0]
 @light_position = [-1.0, -1.0, -1.0, 0.4]
+
 window = ""
 x_alpha = y_alpha = 0
-## флаги для появления и исчизновения объектов
+## флаги для появления и исчезновения объектов
 obj = true; cc = proj = old_proj = false
 
 def init_gl
@@ -49,8 +50,7 @@ display = Proc.new do
   pr = union(vrt, eds, cr_range, p_border)
 
 
-  puts 'aaaaaa'
-	glClear GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
+  glClear GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
 	glMatrixMode GL_MODELVIEW
   glLoadIdentity
 	glEnable GL_DEPTH_TEST
